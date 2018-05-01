@@ -8,6 +8,7 @@ public class Main {
         Ingredient a = new Ingredient("a",50);
         Ingredient b = new Ingredient("b",50);
         Ingredient c = new Ingredient("c",50);
+        // test
         ArrayList<Ingredient> listofing = new ArrayList<>();
         listofing.add(a);
         listofing.add(b);
