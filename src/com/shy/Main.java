@@ -7,7 +7,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        // how to call menu() here?
+        menu();
 
         Ingredient a = new Ingredient("Spaghetti",50);
         Ingredient b = new Ingredient("Onion",50);
@@ -35,7 +35,7 @@ public class Main {
 
 
 
-    private void menu() {
+    private static void menu() {
         //SHOW MENU -- ADD OPTIONS
         int main_menu_op=0;
 
