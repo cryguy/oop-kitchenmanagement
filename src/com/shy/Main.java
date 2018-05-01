@@ -1,6 +1,8 @@
 package com.shy;
 
+//import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 
@@ -18,13 +20,18 @@ public class Main {
          */
 
 
-        
+
 
         // DEMO OF Ingredient Class
-        Ingredient a = new Ingredient("a",50);
-        Ingredient b = new Ingredient("b",50);
-        Ingredient c = new Ingredient("c",50);
+        Ingredient a = new Ingredient("spaghetti",500);
+        Ingredient b = new Ingredient("onion",500);
+        Ingredient c = new Ingredient("water",500);
         // test
+        ArrayList<Stock> stocks = new ArrayList<>();
+        stocks.add(new Stock(a.GetName(), 50));
+        stocks.add(new Stock(b.GetName(), 50));
+        stocks.add(new Stock(c.GetName(), 50));
+
         ArrayList<Ingredient> listofing = new ArrayList<>();
         listofing.add(a);
         listofing.add(b);
@@ -37,7 +44,8 @@ public class Main {
         System.out.println(sushi.GetName() + " " + sushi.GetPrice());
         for(Ingredient i : produ)
             System.out.println(i.GetName() + " " + i.GetPrice());
-
+        for(Stock i : stocks)
+            System.out.println(i.GetName() + " " + i.getLeft());
     }
 
 
