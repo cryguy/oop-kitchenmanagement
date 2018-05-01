@@ -33,7 +33,9 @@ public class Main {
                  //dead
                 break;
         }
-
+        Ingredient a = new Ingredient("Spaghetti",50);
+        Ingredient b = new Ingredient("Onion",50);
+        Ingredient c = new Ingredient("Water",50);
         ArrayList<Stock> stocks = new ArrayList<>();
         stocks.add(new Stock(a.GetName(), 50));
         stocks.add(new Stock(b.GetName(), 50));
