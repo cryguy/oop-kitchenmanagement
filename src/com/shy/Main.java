@@ -7,7 +7,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        menu();
+        mainmenu();
 
         Ingredient a = new Ingredient("Spaghetti",50);
         Ingredient b = new Ingredient("Onion",50);
@@ -35,7 +35,7 @@ public class Main {
 
 
 
-    private static void menu() {
+    private static void mainmenu() {
         //SHOW MENU -- ADD OPTIONS
         int main_menu_op=0;
 
@@ -44,9 +44,9 @@ public class Main {
         main_menu_op = mmo.nextInt();
         switch(main_menu_op){
             case 1:
+                //once user choose this option the ordermenu() will come up
                 System.out.printf("1");
-                //should display products from products class and need to create another switch here
-                //order
+                ordermenu();
                 break;
             case 2:
                 System.out.printf("2");
@@ -57,9 +57,13 @@ public class Main {
                 //inventory_management
                 break;
             default:
-                System.out.printf("not foun");
+                System.out.printf("not found");
                 //dead
                 break;
         }
+    }
+    // this would be the order menu
+    private static void ordermenu(){
+
     }
 }
