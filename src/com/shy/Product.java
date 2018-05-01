@@ -3,6 +3,16 @@ package com.shy;
 import java.util.ArrayList;
 
 public class Product {
+
+    /*
+
+        todo : add method to change value of quantity
+        todo : add bool method to check if item is available - dunno if we should do it here or in product
+
+     */
+
+
+
     private String name = "";
     private int number = 0;
     private double price = 0;
@@ -40,4 +50,6 @@ public class Product {
     {
         return this.ingredients;
     }
+
+
 }
