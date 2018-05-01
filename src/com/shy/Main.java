@@ -1,21 +1,40 @@
 package com.shy;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        /*
-        ADD MAIN MENU
-         */
+        //denish was here
+        //main menu i guess
+        int main_menu_op=0;
 
-        //MAIN MENU
+        System.out.print("Main Menu\n\n 1. Order\n 2. Product Management\n 3. Inventory Management\n\nChoose your option: ");
+        Scanner mmo = new Scanner(System.in);
+        main_menu_op = mmo.nextInt();
+        switch(main_menu_op){
+            case 1:
+                System.out.printf("1");
+                //should display products from products class and need to create another switch here
+                //order
+                break;
+            case 2:
+                System.out.printf("2");
+                //product_management
+                break;
+            case 3:
+                System.out.printf("3");
+                //inventory_management
+                break;
+             default:
+                 System.out.printf("not foun");
+                 //dead
+                break;
+        }
 
 
-        /*
-        ADD FUNCTIONS TO DO AND RETURN TO MAIN MENU
-         */
 
 
         
