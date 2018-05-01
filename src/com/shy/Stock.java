@@ -20,4 +20,7 @@ class Stock {
     String GetName() {
         return this.name;
     }
+    void reduceLeft(int reduce) {
+        this.left -= reduce;
+    }
 }

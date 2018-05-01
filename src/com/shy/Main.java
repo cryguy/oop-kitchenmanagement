@@ -16,7 +16,7 @@ public class Main {
         stocks.add(new Stock(a.GetName(), 50));
         stocks.add(new Stock(b.GetName(), 50));
         stocks.add(new Stock(c.GetName(), 50));
-
+        //stocks.get(1).reduceLeft(10);
         ArrayList<Ingredient> listofing = new ArrayList<>();
         listofing.add(a);
         listofing.add(b);
