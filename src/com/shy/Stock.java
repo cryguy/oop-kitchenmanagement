@@ -20,4 +20,7 @@ class Stock {
     Ingredient GetIngredient() {
         return this.ingredient;
     }
+    void reduceLeft(int reduce) {
+        this.left -= reduce;
+    }
 }
