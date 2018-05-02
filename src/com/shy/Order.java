@@ -1,6 +1,7 @@
 package com.shy;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Order {
     private ArrayList<Product> orderList = new ArrayList<>();
@@ -11,9 +12,9 @@ public class Order {
         boolean done = false;
         if (!this.orderList.isEmpty()) {
             for (int x = 0; x <= this.orderList.size(); x++) {
-                if (this.orderList.get(x).GetName().equals(i.GetName())) {
+                if (this.orderList.get(x).getName().equals(i.getName())) {
                     done = true;
-                    this.orderList.get(x).AddQuantity(i.GetQuantity());
+                    this.orderList.get(x).addQuantity(i.getQuantity());
                     break;
                 }
             }
@@ -22,53 +23,44 @@ public class Order {
             this.orderList.add(i);
     }
 
-    public String ShowOrder() {
+    public String showOrder() {
         StringBuilder sb = new StringBuilder();
         int counter = 0;
         for (Product i : this.orderList) {
             ++counter;
-            sb.append(counter).append(". ").append(i.GetName()).append(" ").append(i.GetQuantity()).append(" ").
-                    append(i.GetPrice() * i.GetQuantity()).append("\n");
-            //1. Spaghetti 5 250 \n
+            sb.append(counter).append(". ").append(i.getName()).append(" ").append(i.getQuantity()).append(" ").
+                    append(i.getPrice() * i.getQuantity()).append("\n");
         }
         if (!this.orderList.isEmpty())
             return sb.toString();
         else return "NULL";
     }
 
-    private boolean ProductAvailable(ArrayList<Stock> stocks, Product product){
-        boolean ret = false;
-        for (Ingredient i : product.GetIngredients())
+    private boolean productAvailable(ArrayList<Stock> stocks, Product product){
+        boolean[] t = new boolean[product.getIngredients().size()];
+        int incre = 0;
+        for (Ingredient i : product.getIngredients())
             for (Stock j : stocks)
-                if (j.GetIngredient().GetName().equals(i.GetName()))
-                    if (j.getLeft() >= i.GetNeeded()) {
-                        ret = true;
-                    }else ret = false;
-
-        return ret;
+                if (j.getIngredient().GetName().equals(i.GetName()))
+                {
+                        t[incre] = j.getLeft() >= i.GetNeeded();
+                        incre++;
+                }
+        return areAllTrue(t);
+        // change to this because previously it wont look thru all before returning true
+        // if 1st is true, 2nd is false and 3rd is true, it will return true
     }
-    ArrayList<Product> ShowAllowedProduct(ArrayList<Stock> stocks, ArrayList<Product> products) {
+    private static boolean areAllTrue(boolean[] array)
+    {
+        for(boolean b : array) if(!b) return false;
+        return true;
+    }
+    ArrayList<Product> showAllowedProduct(ArrayList<Stock> stocks, ArrayList<Product> products) {
         ArrayList<Product> returnproduct = new ArrayList<>();
         for (Product product : products) {
-            if (ProductAvailable(stocks,product))
+            if (productAvailable(stocks,product))
                 returnproduct.add(product);
         }
         return returnproduct;
-        //System.out.println(sb.toString());
-        //for (Product product : j) {
-        /*
-            ArrayList<Ingredient> productIngredient = product.GetIngredients();
-            for (int a = 0; a < productIngredient.size(); a++) {
-                if (i.size() <= a) {
-                    int index = productIngredient.indexOf(i.get(a).GetIngredient());
-                    if (index != -1)
-                        if (productIngredient.get(index))
-                }
-            }
-            for (Ingredient ingredient : productIngredient) {
-                System.out.println(i.indexOf(ingredient));
-                //ingredient.
-            }
-         */
     }
 }

@@ -17,10 +17,11 @@ class Stock {
     int getLeft() {
         return this.left;
     }
-    Ingredient GetIngredient() {
+    Ingredient getIngredient() {
         return this.ingredient;
     }
     void reduceLeft(int reduce) {
         this.left -= reduce;
     }
+    void addLeft(int add) { this.left += add; }
 }
