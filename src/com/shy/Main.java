@@ -12,20 +12,25 @@ public class Main {
     public static void main(String[] args) {
         // todo : ADD method to make Stock, Add to ArrayList<STOCK>
         // todo : ADD method to make product, and then select ingredient from Stock <3
+        // todo : ADD menu to see order
+        // todo : ADD menu and function to add quantity to order, and making a separate function to
+        // todo : check if the amount is available before adding to cart
+        // todo : ADD functions to support w/e thats needed
+
+
         Ingredient a = new Ingredient("Spaghetti",50);
         Ingredient b = new Ingredient("Onion",25);
         Ingredient c = new Ingredient("Water",50);
-        stocks.add(new Stock(a, 5));
-        stocks.add(new Stock(b, 25));
+        stocks.add(new Stock(a, 50));
+        stocks.add(new Stock(b, 5));
         stocks.add(new Stock(c, 50));
         ArrayList<Ingredient> listofing = new ArrayList<>();
         listofing.add(a);
         listofing.add(b);
         listofing.add(c);
 
-
         // DEMO of Product Class
-        Product sushi = new Product("sushi", 50, 5 , listofing);
+        Product sushi = new Product("sushi", 50, listofing);
         products.add(sushi);
 
         mainmenu();
@@ -63,14 +68,19 @@ public class Main {
     // this would be the order menu
     private static void ordermenu(){
         int x = 0;
-        ArrayList<Product> xd = order.showAllowedProduct(stocks,products);
-        for (Product i : xd) {
+        ArrayList<Product> productList = order.showAllowedProduct(stocks,products);
+        if (productList.isEmpty()) {
+            System.out.println("ERROR - ALL PRODUCTS OUT OF STOCK!");
+            return;
+        }
+        for (Product i : productList) {
             x++;
             System.out.println(x + ": " + i.getName());
         }
         int selection = mmo.nextInt();
-        if (selection-1 <= xd.size())
-            System.out.println("Selected - " + xd.get(selection-1).getName());
+        if (selection-1 <= productList.size())
+            order.AddProduct(productList.get(selection-1));
         else System.out.println("Error Please Select Again.");
+        System.out.println(order.showOrder());
     }
 }

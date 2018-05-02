@@ -10,11 +10,20 @@ public class Product {
     private int quantity = 0;
 
     private ArrayList<Ingredient> ingredients = new ArrayList<>();
+    // constructor with custom number of product
     Product(String name, double price, int quantity, ArrayList<Ingredient> ingredients)
     {
         this.name = name;
         this.price = price;
         this.quantity = quantity;
+        this.ingredients = ingredients;
+    }
+    // constructor for default 1 product
+    Product(String name, double price, ArrayList<Ingredient> ingredients)
+    {
+        this.name = name;
+        this.price = price;
+        this.quantity = 1;
         this.ingredients = ingredients;
     }
     String getName()
