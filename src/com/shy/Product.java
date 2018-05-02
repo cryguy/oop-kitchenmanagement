@@ -22,10 +22,9 @@ public class Product {
     public void addIngredient(Ingredient i) {
         this.ingredients.add(i);
     }
-    public Product(String name, int number, double price, int quantity,ArrayList<Ingredient> ingredients)
+    public Product(String name, double price, int quantity, ArrayList<Ingredient> ingredients)
     {
         this.name = name;
-        this.number = number;
         this.price = price;
         this.quantity = quantity;
         this.ingredients = ingredients;
@@ -34,7 +33,7 @@ public class Product {
     {
         return this.name;
     }
-    public int getNumber()
+    public int GetNumber()
     {
         return this.number;
     }
@@ -50,6 +49,16 @@ public class Product {
     {
         return this.ingredients;
     }
-
+    public void AddQuantity(int add)
+    {
+        this.quantity += add;
+    }
+    public int ReduceQuantityAndReturn(int reduce) {
+        if (quantity <= reduce)
+        {
+            return -1;
+        }
+        else return reduce - quantity;
+    }
 
 }

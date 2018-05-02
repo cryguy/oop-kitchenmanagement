@@ -9,15 +9,15 @@ class Stock {
 
     */
     private int left;
-    private String name;
-    Stock(String name, int left){
+    private Ingredient ingredient;
+    Stock(Ingredient ingredient, int left){
         this.left = left;
-        this.name = name;
+        this.ingredient = ingredient;
     }
     int getLeft() {
         return this.left;
     }
-    String GetName() {
-        return this.name;
+    Ingredient GetIngredient() {
+        return this.ingredient;
     }
 }
