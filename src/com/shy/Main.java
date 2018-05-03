@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Main {
     private static Scanner mmo = new Scanner(System.in);
-    private static Order order = new Order();
+    private static Order order = new Order("neworder");
     private static ArrayList<Stock> stocks = new ArrayList<>();
     private static ArrayList<Product> products = new ArrayList<>();
 
@@ -52,15 +52,15 @@ public class Main {
                 ordermenu();
                 break;
             case 2:
-                System.out.printf("2\n");
+                System.out.print("2\n");
                 //product_management
                 break;
             case 3:
-                System.out.printf("3\n");
+                System.out.print("3\n");
                 //inventory_management
                 break;
             default:
-                System.out.printf("not found\n");
+                System.out.print("not found\n");
                 //dead
                 break;
         }
@@ -84,3 +84,5 @@ public class Main {
         System.out.println(order.showOrder());
     }
 }
+
+

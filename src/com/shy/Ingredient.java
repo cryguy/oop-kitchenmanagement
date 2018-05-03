@@ -7,10 +7,11 @@ class Ingredient {
     Ingredient(String name, double price){
         this.name = name;
         this.price = price;
-        this.needed = needed;
+        this.needed = 0;
     }
     Ingredient(String name, int needed){
         this.name = name;
+        this.price = 0;
         this.needed = needed;
     }
 

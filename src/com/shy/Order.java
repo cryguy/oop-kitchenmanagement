@@ -7,9 +7,10 @@ import java.util.ArrayList;
     TODO: It might simplify the add product and the checks for duplicate and ingredients? Might be more complicated for multiple orders!
  */
 class Order {
+    private String identifier;
     private ArrayList<Product> orderList = new ArrayList<>();
 
-    Order() {}
+    Order(String i) {this.identifier=i;}
 
     void AddProduct(Product i) {
         if (!this.orderList.isEmpty()) {
@@ -25,6 +26,8 @@ class Order {
             this.orderList.add(i);
     }
 
+    //void RemoveProduct
+
     String showOrder() {
         StringBuilder sb = new StringBuilder();
         int counter = 0;
@@ -37,6 +40,15 @@ class Order {
             return sb.toString();
         else return "NULL";
     }
+
+    void deleteProduct(Product i) {
+        orderList.remove(i);
+    }
+
+    /*
+    TODO order validation looping true each order -product and check if quantity less than 1 and remove the product
+
+     */
 
     private boolean productAvailable(ArrayList<Stock> stocks, Product product){
         //boolean[] t = new boolean[product.getIngredients().size()];
