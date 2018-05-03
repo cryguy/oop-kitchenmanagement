@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class Product {
 
     private String name = "";
-    //private int number = 0;
     private double price = 0;
     private int quantity = 0;
 
