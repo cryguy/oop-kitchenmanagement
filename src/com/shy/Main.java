@@ -2,7 +2,6 @@
 package com.shy;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Main {
 
@@ -35,12 +34,4 @@ public class Main {
         menu.mainmenu();
         //System.out.println(order.showOrder());
     }
-
-
-
-
-
-
 }
-
-

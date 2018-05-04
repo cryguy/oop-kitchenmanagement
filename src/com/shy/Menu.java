@@ -33,7 +33,6 @@ class Menu {
     }
 
     void mainmenu() {
-        //SHOW MENU -- ADD OPTIONS
         int main_menu_op;
         clear();
         System.out.print("Main Menu\n\n 1. Order\n 2. Orders Management\n 3. Product Management\n 4. Inventory Management\n\nChoose your option: ");

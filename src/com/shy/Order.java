@@ -7,12 +7,12 @@ import java.util.ArrayList;
     TODO: It might simplify the add product and the checks for duplicate and ingredients? Might be more complicated for multiple orders!
  */
 class Order {
-    private String identifier;
+    private int identifier;
     private ArrayList<Product> orderList = new ArrayList<>();
     private Product product;
 
-    Order(String i) {this.identifier=i;}
-    String getName() {
+    Order(int i) {this.identifier=i;}
+    int getName() {
         return this.identifier;
     }
     void AddProduct(Product i) {
