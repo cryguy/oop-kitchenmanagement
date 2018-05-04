@@ -1,5 +1,6 @@
 package com.shy;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -9,14 +10,32 @@ class Menu {
     private static Scanner mmo = new Scanner(System.in);
     private static OrderManagement orderManagement = new OrderManagement();
     Menu () {}
-    private void clear() {
-        System.out.print("\033[H\033[2J");
+    private void clear()
+    {
+        final String os = System.getProperty("os.name");
+
+        if (os.contains("Windows"))
+        {
+            try {
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor(); // clear cmd by running cmd /c cls
+            } catch (InterruptedException | IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            try {
+                Runtime.getRuntime().exec("clear");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     void mainmenu() {
         //SHOW MENU -- ADD OPTIONS
         int main_menu_op;
-
+        clear();
         System.out.print("Main Menu\n\n 1. Order\n 2. Orders Management\n 3. Product Management\n 4. Inventory Management\n\nChoose your option: ");
 
         main_menu_op = mmo.nextInt();
@@ -43,21 +62,32 @@ class Menu {
     }
     // this would be the order menu
     private void ordermenu(){
-        Order order = orderManagement.NewOrder();
-        ArrayList<Product> productList = order.showAllowedProduct(stocks,products);
-        if (productList.isEmpty()) {
-            System.out.println("ERROR - ALL PRODUCTS OUT OF STOCK!");
-            return;
-        }
-        int x = 0;
-        for (Product i : productList) {
-            x++;
-            System.out.println(x + ": " + i.getName());
-        }
-        int selection = mmo.nextInt();
-        if (selection-1 <= productList.size())
-            order.AddProduct(productList.get(selection-1));
-        else System.out.println("Error Please Select Again.");
-        System.out.println(order.showOrder());
+        clear();
+        int selection = -1;
+        do {
+            Order order = orderManagement.NewOrder();
+            ArrayList<Product> productList = order.showAllowedProduct(stocks,products);
+            if (productList.isEmpty()) {
+                System.out.println("ERROR - ALL PRODUCTS OUT OF STOCK!");
+                return;
+            }
+            int x = 0;
+            for (Product i : productList) {
+                System.out.println(++x + ": " + i.getName());
+            }
+            System.out.println("0 : Show Ordered & Confirm Order");
+            selection = mmo.nextInt();
+            if (selection-1 <= productList.size() && selection != 0 && selection >= 1) {
+                order.AddProduct(productList.get(selection-1));
+            } else if (selection == 0) {
+                System.out.println(order.showOrder());
+            } else {
+                System.out.println("Error Please Select Again.");
+            }
+        } while (selection != 0);
+
+
+
+
     }
 }

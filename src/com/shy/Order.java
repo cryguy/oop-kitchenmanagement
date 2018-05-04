@@ -9,6 +9,7 @@ import java.util.ArrayList;
 class Order {
     private String identifier;
     private ArrayList<Product> orderList = new ArrayList<>();
+    private Product product;
 
     Order(String i) {this.identifier=i;}
     String getName() {
@@ -26,6 +27,7 @@ class Order {
         }
         else
             this.orderList.add(i);
+        StockManagement.getInstance().ReduceQuantity(i);
     }
 
     //void RemoveProduct
@@ -57,12 +59,12 @@ class Order {
         //int incre = 0;
         for (Ingredient i : product.getIngredients())
             for (Stock j : stocks)
-                if (j.getIngredient().GetName().equals(i.GetName()))
-                        if (!(j.getLeft() >= i.GetNeeded()))
-                            return false;
+                if (j.getIngredient().GetName().equals(i.GetName())) {
+                    if (!(j.getLeft() >= i.GetNeeded()))
+                        return false;
+                    break; // break out of 1 for loop as we found it already, don't need to go to the next if we found it
+                }
         return true;
-        // refactored code to remove the boolean array, if 1 is false all is false
-        // return true only if all passed the test
     }
     /*
     private static boolean areAllTrue(boolean[] array)

@@ -7,8 +7,8 @@ import java.util.Scanner;
 public class Main {
 
 
-
     public static void main(String[] args) {
+
         // todo : ADD method to make Stock, Add to ArrayList<STOCK>
         // todo : ADD method to make product, and then select ingredient from Stock <3
         // todo : ADD menu to see order
