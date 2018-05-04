@@ -26,3 +26,5 @@ hs_err_pid*
 
 .idea/*.*
 .idea/misc.xml
+out/production/KitchenManagement/META-INF/MANIFEST.MF
+src/META-INF/MANIFEST.MF
