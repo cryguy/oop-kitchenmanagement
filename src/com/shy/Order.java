@@ -11,7 +11,9 @@ class Order {
     private ArrayList<Product> orderList = new ArrayList<>();
 
     Order(String i) {this.identifier=i;}
-
+    String getName() {
+        return this.identifier;
+    }
     void AddProduct(Product i) {
         if (!this.orderList.isEmpty()) {
             for (int x = 0; x <= this.orderList.size(); x++) {
