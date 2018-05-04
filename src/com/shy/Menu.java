@@ -8,7 +8,6 @@ class Menu {
     private static ArrayList<Stock> stocks = new ArrayList<>();
     private static ArrayList<Product> products = new ArrayList<>();
     private static Scanner mmo = new Scanner(System.in);
-    private static OrderManagement orderManagement = new OrderManagement();
     Menu () {}
     private void clear()
     {
@@ -62,9 +61,14 @@ class Menu {
     // this would be the order menu
     private void ordermenu(){
         clear();
+        System.out.println(OrderManagement.getInstance().GetOrder(1).showOrder());
+        int count = 1;
+        for (Stock i :StockManagement.stocks)
+            System.out.println(count++ + " " +i.getIngredient().GetName() + " - " + i.getLeft());
+        // testing ^
         int selection = -1;
         do {
-            Order order = orderManagement.NewOrder();
+            Order order = OrderManagement.getInstance().NewOrder();
             ArrayList<Product> productList = order.showAllowedProduct(stocks,products);
             if (productList.isEmpty()) {
                 System.out.println("ERROR - ALL PRODUCTS OUT OF STOCK!");
