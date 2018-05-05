@@ -18,6 +18,12 @@ public class StockManagement {
         }
         return instance;
     }
+    void PrintStocks(){
+        for (Stock i : stocks)
+        {
+            System.out.println(i.getIngredient().GetName() + " " + i.getLeft());
+        }
+    }
     void ReduceQuantity(Product product) {
         for (Ingredient i : product.getIngredients())
             for (Stock j : stocks)

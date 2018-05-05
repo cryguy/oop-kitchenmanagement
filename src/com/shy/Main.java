@@ -20,19 +20,19 @@ public class Main {
         Ingredient b = new Ingredient("Onion",25);
         Ingredient c = new Ingredient("Water",50);
         StockManagement stockManagement = StockManagement.getInstance();
-        StockManagement.stocks.add(new Stock(a, 50));
-        StockManagement.stocks.add(new Stock(b, 50));
-        StockManagement.stocks.add(new Stock(c, 50));
+        StockManagement.stocks.add(new Stock(a, 1000));
+        StockManagement.stocks.add(new Stock(b, 1000));
+        StockManagement.stocks.add(new Stock(c, 1000));
 
         ArrayList<Ingredient> listofing = new ArrayList<>();
         listofing.add(a);
         listofing.add(b);
         listofing.add(c);
         int count =1;
-        for (Stock i :StockManagement.stocks)
-            System.out.println(count++ + " " +i.getIngredient().GetName() + " - " + i.getLeft());
         // DEMO of Product Class
         Product sushi = new Product("sushi", 50, listofing);
+        ProductManagement.products.add(sushi);
+        System.out.println(order);
         order.AddProduct(sushi);
         Menu menu = new Menu();
         menu.mainmenu();

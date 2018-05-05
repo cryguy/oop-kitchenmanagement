@@ -25,6 +25,10 @@ public class Product {
         this.quantity = 1;
         this.ingredients = ingredients;
     }
+    Product oneQuantity()
+    {
+        return new Product(this.getName(),this.getPrice(),this.getIngredients());
+    }
     String getName()
     {
         return this.name;

@@ -15,6 +15,7 @@ class Order {
     int getName() {
         return this.identifier;
     }
+
     void AddProduct(Product i) {
         if (!this.orderList.isEmpty()) {
             for (int x = 0; x <= this.orderList.size(); x++) {
@@ -31,7 +32,14 @@ class Order {
     }
 
     //void RemoveProduct
-
+    double getPrice() {
+        double price = 0;
+        for (Product i : this.orderList)
+        {
+            price += i.getPrice()*i.getQuantity();
+        }
+        return price;
+    }
     String showOrder() {
         StringBuilder sb = new StringBuilder();
         int counter = 0;
