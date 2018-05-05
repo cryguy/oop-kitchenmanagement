@@ -11,6 +11,7 @@ public class Cashier{
         }
     }
 
+    //test 1
     void showOrder(Order i) {
         System.out.println(i.showOrder());
         System.out.println("Total Price : " + getPrice(i));
