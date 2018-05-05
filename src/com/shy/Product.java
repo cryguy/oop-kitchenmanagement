@@ -2,21 +2,14 @@ package com.shy;
 
 import java.util.ArrayList;
 
-public class Product {
+public class Product implements Cloneable {
 
-    private String name = "";
-    private double price = 0;
-    private int quantity = 0;
+    private String name;
+    private double price;
+    private int quantity;
 
-    private ArrayList<Ingredient> ingredients = new ArrayList<>();
+    private ArrayList<Ingredient> ingredients;
     // constructor with custom number of product
-    Product(String name, double price, int quantity, ArrayList<Ingredient> ingredients)
-    {
-        this.name = name;
-        this.price = price;
-        this.quantity = quantity;
-        this.ingredients = ingredients;
-    }
     // constructor for default 1 product
     Product(String name, double price, ArrayList<Ingredient> ingredients)
     {
@@ -25,10 +18,6 @@ public class Product {
         this.quantity = 1;
         this.ingredients = ingredients;
     }
-    Product oneQuantity()
-    {
-        return new Product(this.getName(),this.getPrice(),this.getIngredients());
-    }
     String getName()
     {
         return this.name;
@@ -36,6 +25,10 @@ public class Product {
     double getPrice()
     {
         return this.price;
+    }
+
+    void setQuantity(int i) {
+        this.quantity = i;
     }
     int getQuantity()
     {
@@ -57,4 +50,12 @@ public class Product {
         else return reduce - this.quantity;
     }
 
+    public Product clone() throws CloneNotSupportedException {
+        Product cloneObj = (Product) super.clone();
+        cloneObj.ingredients = this.ingredients;
+        cloneObj.quantity = 1;
+        cloneObj.name = this.name;
+        cloneObj.price = this.price;
+        return cloneObj;
+    }
 }

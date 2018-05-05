@@ -6,16 +6,25 @@ class OrderManagement {
         private ArrayList<Order> orders = new ArrayList<>();
         private static OrderManagement instance = null;
         private int counter = 1;
-        protected OrderManagement () {}
+
+    private OrderManagement() {
+    }
         /*
         TODO: Save order, delete order, show price, select order
          */
-        public synchronized static OrderManagement getInstance() {
+        synchronized static OrderManagement getInstance() {
             if(instance == null) {
                 instance = new OrderManagement();
             }
             return instance;
         }
+
+    void NewOrderX() {
+        Order i = new Order(counter++);
+        orders.add(i);
+        // counter works better than size, because we will
+        // need to check for a lot of other stuff if we use size()+1
+    }
         Order NewOrder () {
             Order i = new Order(counter++);
             orders.add(i);

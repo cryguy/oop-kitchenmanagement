@@ -30,10 +30,8 @@ public class Main {
         listofing.add(c);
         int count =1;
         // DEMO of Product Class
-        Product sushi = new Product("sushi", 50, listofing);
-        ProductManagement.products.add(sushi);
-        System.out.println(order);
-        order.AddProduct(sushi);
+        ProductManagement.products.add(new Product("sushi", 50, listofing));
+        ProductManagement.products.add(new Product("Test", 10, listofing));
         Menu menu = new Menu();
         menu.mainmenu();
 

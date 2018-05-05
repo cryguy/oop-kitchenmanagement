@@ -1,6 +1,5 @@
 package com.shy;
 
-import java.util.ArrayList;
 /*
 TODO Return Price, Loop to find Price, After paid call Order Management and delete order
  */
@@ -12,8 +11,8 @@ public class Cashier{
         }
     }
 
-    public void showOrder(Order i) {
-        i.showOrder();
+    void showOrder(Order i) {
+        System.out.println(i.showOrder());
         System.out.println("Total Price : " + getPrice(i));
     }
 

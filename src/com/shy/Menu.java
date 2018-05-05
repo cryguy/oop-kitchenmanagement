@@ -1,12 +1,10 @@
 package com.shy;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
+
 class Menu {
-    private static ArrayList<Stock> stocks = new ArrayList<>();
-    //private static ArrayList<Product> products = new ArrayList<>();
     private static Scanner mmo = new Scanner(System.in);
     Menu () {}
     private void clear()
@@ -39,8 +37,8 @@ class Menu {
         main_menu_op = mmo.nextInt();
         switch(main_menu_op){
             case 1:
-                //once user choose this option the ordermenu() will come up
-                ordermenu();
+                //once user choose this option the orderMenu() will come up
+                orderMenu();
                 break;
             case 2:
                 System.out.print("2\n");
@@ -59,38 +57,46 @@ class Menu {
         }
     }
     // this would be the order menu
-    private void ordermenu(){
+    private void orderMenu() {
+        ProductManagement.updateAvailable();
         StockManagement.getInstance().PrintStocks();
         clear();
+        StockManagement.getInstance().PrintStocks();
         int selection;
         Order order = OrderManagement.getInstance().NewOrder();
-        System.out.println(order);
-
         do {
-            ArrayList<Product> productList = order.showAllowedProduct(stocks,ProductManagement.products);
 
-            if (productList.isEmpty()) {
+            if (ProductManagement.availableProducts().isEmpty() && order.OrderProduct().size() == 0) {
                 System.out.println("ERROR - ALL PRODUCTS OUT OF STOCK!");
                 return;
-            }
+            } else if (ProductManagement.availableProducts().isEmpty() && order.OrderProduct().size() != 0)
+                break;
+
 
 
             int x = 0;
-            for (Product i : productList) {
+            for (Product i : ProductManagement.availableProducts()) {
                 System.out.println(++x + ": " + i.getName());
             }
+
             System.out.println("0 : Show Ordered & Confirm Order");
             selection = mmo.nextInt();
-            if (selection != 0 && selection >= 1 && (selection-1) <= productList.size()-1) {
-                order.AddProduct(productList.get(selection-1).oneQuantity()); // fix bug where it adds to itself , might have better solution?
-            } else if (selection != 0  && ((selection-1) >= (productList.size()-1) || selection-1 < 0)) {
+            if (selection != 0 && selection >= 1 && (selection - 1) <= ProductManagement.availableProducts().size() - 1) {
+                try {
+                    order.AddProduct(ProductManagement.availableProducts().get(selection - 1).clone()); // WELL, FIXED IT, Apparently only the Pointer/Reference to object is added
+                } catch (CloneNotSupportedException e) {
+                    e.printStackTrace();
+                }
+            } else if (selection != 0 && ((selection - 1) >= (ProductManagement.availableProducts().size() - 1) || selection - 1 < 0)) {
                 System.out.println("Error Please Select Again.");
-            }
+            } else System.out.println("Error");
+            System.out.println(order.showOrder());
+            ProductManagement.updateAvailable();
         } while (selection != 0);
-        order.showOrder();
+
         Cashier a = new Cashier();
         a.showOrder(order);
-
+        StockManagement.getInstance().PrintStocks();
 
     }
 }
