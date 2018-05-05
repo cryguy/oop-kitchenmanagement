@@ -89,7 +89,8 @@ class Menu {
                 }
             } else if (selection != 0 && ((selection - 1) >= (ProductManagement.availableProducts().size() - 1) || selection - 1 < 0)) {
                 System.out.println("Error Please Select Again.");
-            } else System.out.println("Error");
+            } else if (selection != 0) System.out.println("Error");
+
             System.out.println(order.showOrder());
             ProductManagement.updateAvailable();
         } while (selection != 0);
