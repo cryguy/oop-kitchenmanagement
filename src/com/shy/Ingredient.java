@@ -1,13 +1,19 @@
 package com.shy;
 
 class Ingredient {
-    private String name;
-    private double price;
+    private final String name;
+    private final double price;
     private int needed;
     Ingredient(String name, double price){
         this.name = name;
         this.price = price;
         this.needed = 0;
+    }
+
+    Ingredient(String name, double price, int needed) {
+        this.name = name;
+        this.price = price;
+        this.needed = needed;
     }
     Ingredient(String name, int needed){
         this.name = name;
@@ -25,5 +31,12 @@ class Ingredient {
         return this.needed;
     }
 
-
+    @Override
+    public String toString() {
+        return "Ingredient{" +
+                "name='" + name + '\'' +
+                ", price=" + price +
+                ", needed=" + needed +
+                '}';
+    }
 }

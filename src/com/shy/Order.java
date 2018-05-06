@@ -45,7 +45,6 @@ class Order {
 
     /**
      * Add Product into array of products
-     *
      * @param i the product to add
      */
     void AddProduct(Product i) {

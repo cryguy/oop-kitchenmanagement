@@ -1,28 +1,39 @@
 package com.shy;
 
-class Stock {
+class Stock extends Ingredient {
 
     /*
 
-    todo : add method to change value of left
-    todo : add method to loop thru array to get what we need easily
+    Not sure if we want to use Inheritance here,
+    might be better to just use the object because we might need to add this to Product?
+    Or we can just make a method to return an Object of Ingredient?
 
     */
     private int left;
-    private Ingredient ingredient;
-    Stock(Ingredient ingredient, int left){
+
+    Stock(String name, double price, int left) {
+        super(name, price);
         this.left = left;
-        this.ingredient = ingredient;
+        //this.ingredient = ingredient;
     }
     int getLeft() {
         return this.left;
     }
-    Ingredient getIngredient() {
-        return this.ingredient;
+
+    String getName() {
+        return super.GetName();
+    }
+
+    double getPrice() {
+        return super.GetPrice();
     }
 
     void reduceLeft(int reduce) {
         this.left -= reduce;
     }
     void addLeft(int add) { this.left += add; }
+
+    Ingredient ingredient() {
+        return this;
+    }
 }

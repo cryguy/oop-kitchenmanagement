@@ -59,9 +59,9 @@ class Menu {
     // this would be the order menu
     private void orderMenu() {
         ProductManagement.updateAvailable();
-        StockManagement.getInstance().PrintStocks();
         clear();
         StockManagement.getInstance().PrintStocks();
+        System.out.println(StockManagement.stocks.get(0).ingredient().toString());
         int selection;
         Order order = OrderManagement.getInstance().NewOrder();
         do {

@@ -34,7 +34,7 @@ public class ProductManagement {
         //int incre = 0;
         for (Ingredient i : product.getIngredients())
             for (Stock j : stocks)
-                if (j.getIngredient().GetName().equals(i.GetName())) {
+                if (j.GetName().equals(i.GetName())) {
                     if (!(j.getLeft() >= i.GetNeeded()))
                         return false;
                     break; // break out of 1 for loop as we found it already, don't need to go to the next if we found it

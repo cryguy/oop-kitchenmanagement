@@ -20,9 +20,9 @@ public class Main {
         Ingredient b = new Ingredient("Onion",25);
         Ingredient c = new Ingredient("Water",50);
         StockManagement stockManagement = StockManagement.getInstance();
-        StockManagement.stocks.add(new Stock(a, 1000));
-        StockManagement.stocks.add(new Stock(b, 1000));
-        StockManagement.stocks.add(new Stock(c, 1000));
+        StockManagement.stocks.add(new Stock("Spaghetti", 15.00, 1000));
+        StockManagement.stocks.add(new Stock("Onion", 15.00, 1000));
+        StockManagement.stocks.add(new Stock("Water", 15.00, 1000));
 
         ArrayList<Ingredient> listofing = new ArrayList<>();
         listofing.add(a);
