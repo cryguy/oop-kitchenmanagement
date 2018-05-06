@@ -1,8 +1,6 @@
 
 package com.shy;
 
-import java.util.ArrayList;
-
 public class Main {
 
 
@@ -14,6 +12,7 @@ public class Main {
         // todo : ADD menu and function to add quantity to order, and making a separate function to
         // todo : check if the amount is available before adding to cart
         // todo : ADD functions to support w/e thats needed
+        /*
         OrderManagement orderManagement = OrderManagement.getInstance();
         Order order = orderManagement.NewOrder();
         Ingredient a = new Ingredient("Spaghetti",50);
@@ -32,7 +31,10 @@ public class Main {
         // DEMO of Product Class
         ProductManagement.products.add(new Product("sushi", 50, listofing));
         ProductManagement.products.add(new Product("Test", 10, listofing));
+        */
+
         Menu menu = new Menu();
+
         menu.mainmenu();
 
     }

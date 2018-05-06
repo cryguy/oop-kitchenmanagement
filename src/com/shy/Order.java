@@ -73,6 +73,16 @@ class Order {
         return price;
     }
 
+    private void RemoveEmptyProduct() {
+        this.orderList.removeIf((Product product) -> {
+            boolean ret = product.getQuantity() <= 0;
+            if (ret)
+                System.out.println("Deleting Product - " + product.getName() + " from order because quantity " +
+                        "is less than or equal to 0"); // added this for the logging , can be removed and used as a 1 liner
+            return ret;
+
+        });
+    }
     /**
      * Gets all product in order and generate String
      *
@@ -80,6 +90,7 @@ class Order {
      */
     // TODO : Might want to change String to Array? Not sure bout this, maybe void and then just Println all the orders
     String showOrder() {
+        RemoveEmptyProduct();
         StringBuilder sb = new StringBuilder();
         int counter = 0;
         for (Product i : this.orderList) {
@@ -96,7 +107,7 @@ class Order {
      *
      * @return orderList
      */
-    ArrayList<Product> OrderProduct() {
+    ArrayList<Product> GetOrderProduct() {
         return this.orderList;
     }
 
@@ -105,6 +116,7 @@ class Order {
      * @param i Product to delete
      */
     void deleteProduct(Product i) {
-        orderList.remove(i);
+        this.orderList.get(this.orderList.indexOf(i)).setQuantity(0);
+        RemoveEmptyProduct();
     }
 }
