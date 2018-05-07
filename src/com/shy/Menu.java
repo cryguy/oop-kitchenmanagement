@@ -34,7 +34,7 @@ class Menu {
         while (true) {
             clear();
             OrderManagement.getInstance().CheckEmptyOrderAndRemove();
-            System.out.print("Main Menu\n\n 1. Order\n 2. Orders Management\n 3. Product Management\n 4. Inventory Management\n 0. Exit\n\nChoose your option: ");
+            System.out.print("Main Menu\n\n 1. Order\n 2. Order Management\n 3. Product Management\n 4. Inventory Management\n 0. Exit\n\nChoose your option: ");
             main_menu_op = mmo.nextInt();
             switch (main_menu_op) {
                 case 1:
@@ -43,10 +43,11 @@ class Menu {
                     break;
                 case 2:
                     System.out.print("2\n");
-                    productManage();
+
                     break;
                 case 3:
                     System.out.print("3\n");
+                    productManage();
                     break;
                 case 4:
                     inventory();
@@ -112,7 +113,7 @@ class Menu {
             switch (menu) {
                 case 1:
                     System.out.println("---- Product List ----");
-                    System.out.println("Num  Name         Left"); // 2 space after \t\t
+                    System.out.println("Num  Name        Price"); // 2 space after \t\t
                     if (ProductManagement.products.isEmpty())
                         System.out.println("Nothing is in here? add a new product?");
                     ProductManagement.getInstance().PrintProduct();
@@ -142,8 +143,8 @@ class Menu {
                             if (inventoryselect == 0)
                                 break outerloop;
                         } while (inventoryselect - 1 < 0);
-                        int needed = getInput("Enter number of - " + StockManagement
-                                .stocks.get(inventoryselect - 1).getName() + "needed", new input.IntegerInputGrabber());
+                        int needed = getInput("Enter number of - \"" + StockManagement
+                                .stocks.get(inventoryselect - 1).getName() + "\" needed", new input.IntegerInputGrabber());
                         productIngredient.add(new Ingredient(StockManagement.stocks.get(inventoryselect - 1).getName(),
                                 StockManagement.stocks.get(inventoryselect - 1).getPrice(), needed));
                     }
@@ -151,20 +152,20 @@ class Menu {
                     break;
                 case 3:
 
-                    // not done yet 
-                    System.out.println("---- Stock List ----");
+                    
+                    System.out.println("---- Product List ----");
 
-                    if (StockManagement.getInstance().IsEmpty()) {
-                        System.out.println("Nothing is in stock !");
+                    if (ProductManagement.products.isEmpty()) {
+                        System.out.println("Nothing is added !");
                         break;
                     }
-                    StockManagement.getInstance().PrintStocks();
+                    ProductManagement.getInstance().PrintProduct();
                     System.out.println();
                     int selection = getInput("Enter index to delete : ", new input.IntegerInputGrabber());
 
-                    if (selection != 0 && selection >= 1 && (selection - 1) <= StockManagement.stocks.size() - 1) {
-                        StockManagement.getInstance().DeleteStock(StockManagement.stocks.get(selection - 1));
-                    } else if (selection != 0 && ((selection - 1) >= (StockManagement.stocks.size() - 1) || selection - 1 < 0)) {
+                    if (selection != 0 && selection >= 1 && (selection - 1) <= ProductManagement.products.size() - 1) {
+                        ProductManagement.getInstance().DeleteProduct(ProductManagement.products.get(selection - 1));
+                    } else if (selection != 0 && ((selection - 1) >= (ProductManagement.products.size() - 1) || selection - 1 < 0)) {
                         System.out.println("Error Please Select Again.");
                     } else if (selection != 0) System.out.println("Error");
 

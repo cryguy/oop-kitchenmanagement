@@ -19,7 +19,6 @@ class OrderManagement {
     }
 
     void CheckEmptyOrderAndRemove() {
-        ListIterator<Order> iter = orders.listIterator();
         orders.removeIf((Order order) -> {
             boolean ret = order.GetOrderProduct().isEmpty();
             if (ret)
