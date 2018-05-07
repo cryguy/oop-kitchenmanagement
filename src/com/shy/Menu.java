@@ -151,7 +151,7 @@ class Menu {
                     break;
                 case 3:
 
-                    // not done yet 
+                    // not done yet
                     System.out.println("---- Stock List ----");
 
                     if (StockManagement.getInstance().IsEmpty()) {
