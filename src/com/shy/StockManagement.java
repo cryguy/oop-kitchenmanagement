@@ -33,7 +33,8 @@ class StockManagement {
         int x = 0;
         for (Stock i : stocks)
         {
-            System.out.println(++x + " " + i.GetName() + " " + i.getLeft());
+            System.out.printf("%d\t %s\t\t%d%n", ++x, i.getName(), i.getLeft());
+            //System.out.println(++x + ". " + i.GetName() + " " + i.getLeft());
         }
     }
     void ReduceQuantity(Product product) {

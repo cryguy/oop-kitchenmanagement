@@ -1,6 +1,7 @@
 package com.shy;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 
@@ -42,14 +43,14 @@ class Menu {
                     break;
                 case 2:
                     System.out.print("2\n");
-                    //product_management
+                    productManage();
                     break;
                 case 3:
                     System.out.print("3\n");
-                    inventory();
                     break;
                 case 4:
-                    System.out.println("4\n");
+                    inventory();
+                    break;
                 case 0:
                     return;
                 default:
@@ -101,18 +102,93 @@ class Menu {
 
     }
 
+    private void productManage() {
+        int menu;
+        while (true) {
+            clear();
+            System.out.print("Product Management\n\n 1. Print Products\n 2. Add Product\n 3. Remove Product\n 0. Exit\n\nChoose your option: ");
+            menu = mmo.nextInt();
+            mmo.nextLine();
+            switch (menu) {
+                case 1:
+                    System.out.println("---- Product List ----");
+                    System.out.println("Num  Name         Left"); // 2 space after \t\t
+                    if (ProductManagement.products.isEmpty())
+                        System.out.println("Nothing is in here? add a new product?");
+                    ProductManagement.getInstance().PrintProduct();
+                    break;
+                case 2:
+
+                    clear();
+                    if (StockManagement.getInstance().IsEmpty()) {
+                        System.err.println("Nothing is in stock !");
+                        System.err.println("Have you inserted any Stock?");
+                        System.err.println("Press Enter to Continue");
+                        mmo.nextLine();
+                        break;
+                    }
+                    System.out.print("Enter Name of Product : ");
+                    String name = mmo.nextLine();
+                    double price = getInput("Enter Price of " + name + " : ", new input.DoubleInputGrabber());
+                    int inventoryselect;
+                    ArrayList<Ingredient> productIngredient = new ArrayList<>();
+                    System.out.println("---- Stock List ----");
+                    System.out.println("Num  Name       Left");
+                    StockManagement.getInstance().PrintStocks();
+                    outerloop:
+                    while (true) {
+                        do {
+                            inventoryselect = getInput("Enter index of ingredient - ", new input.IntegerInputGrabber());
+                            if (inventoryselect == 0)
+                                break outerloop;
+                        } while (inventoryselect - 1 < 0);
+                        int needed = getInput("Enter number of - " + StockManagement
+                                .stocks.get(inventoryselect - 1).getName() + "needed", new input.IntegerInputGrabber());
+                        productIngredient.add(new Ingredient(StockManagement.stocks.get(inventoryselect - 1).getName(),
+                                StockManagement.stocks.get(inventoryselect - 1).getPrice(), needed));
+                    }
+                    ProductManagement.products.add(new Product(name, price, productIngredient));
+                    break;
+                case 3:
+
+                    // not done yet 
+                    System.out.println("---- Stock List ----");
+
+                    if (StockManagement.getInstance().IsEmpty()) {
+                        System.out.println("Nothing is in stock !");
+                        break;
+                    }
+                    StockManagement.getInstance().PrintStocks();
+                    System.out.println();
+                    int selection = getInput("Enter index to delete : ", new input.IntegerInputGrabber());
+
+                    if (selection != 0 && selection >= 1 && (selection - 1) <= StockManagement.stocks.size() - 1) {
+                        StockManagement.getInstance().DeleteStock(StockManagement.stocks.get(selection - 1));
+                    } else if (selection != 0 && ((selection - 1) >= (StockManagement.stocks.size() - 1) || selection - 1 < 0)) {
+                        System.out.println("Error Please Select Again.");
+                    } else if (selection != 0) System.out.println("Error");
+
+                    break;
+                case 0:
+                    return;
+            }
+        }
+    }
     private void inventory() {
-        int main_menu_op;
+        int menu;
         while (true) {
             clear();
             System.out.print("Inventory Management\n\n 1. Print Stock\n 2. Add Stock\n 3. Remove Stock\n 0. Exit\n\nChoose your option: ");
-            main_menu_op = mmo.nextInt();
+            menu = mmo.nextInt();
             mmo.nextLine();
-            switch (main_menu_op) {
+            switch (menu) {
                 case 1:
+                    System.out.println("---- Stock List ----");
+                    System.out.println("Num  Name       Left");
                     StockManagement.getInstance().PrintStocks();
                     break;
                 case 2:
+
                     System.out.print("Enter Name of Item : ");
                     String name = mmo.nextLine();
                     double price = getInput("Enter Price of " + name + " : ", new input.DoubleInputGrabber());
@@ -129,17 +205,20 @@ class Menu {
                     StockManagement.getInstance().PrintStocks();
                     System.out.println();
                     int selection = getInput("Enter index to delete : ", new input.IntegerInputGrabber());
+
                     if (selection != 0 && selection >= 1 && (selection - 1) <= StockManagement.stocks.size() - 1) {
                         StockManagement.getInstance().DeleteStock(StockManagement.stocks.get(selection - 1));
                     } else if (selection != 0 && ((selection - 1) >= (StockManagement.stocks.size() - 1) || selection - 1 < 0)) {
                         System.out.println("Error Please Select Again.");
                     } else if (selection != 0) System.out.println("Error");
+
                     break;
                 case 0:
                     return;
             }
         }
     }
+
 
     private <T> T getInput(String prompt, input.InputGrabber<T> grabber) {
         System.out.print(prompt);

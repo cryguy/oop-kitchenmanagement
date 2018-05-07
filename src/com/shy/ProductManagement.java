@@ -2,7 +2,7 @@ package com.shy;
 
 import java.util.ArrayList;
 
-public class ProductManagement {
+class ProductManagement {
     // TODO : ADD method to add stock
     // StockManagement is an object that contains the array of Stocks
     static ArrayList<Product> products = new ArrayList<>();
@@ -15,7 +15,7 @@ public class ProductManagement {
     Prevents us from making more than 1 instance and causing problems
     -- SINGLETON
      */
-    public synchronized static ProductManagement getInstance() {
+    synchronized static ProductManagement getInstance() {
         if(instance == null) {
             instance = new ProductManagement();
         }
@@ -42,6 +42,13 @@ public class ProductManagement {
         return true;
     }
 
+    void PrintProduct() {
+        int x = 0;
+        for (Product i : products) {
+            System.out.printf("%d\t %s\t\t  %.2f%n", ++x, i.getName(), i.getPrice());
+            //System.out.println(++x + ". " + i.GetName() + " " + i.getLeft());
+        }
+    }
     private static ArrayList<Product> showAllowedProduct(ArrayList<Stock> stocks, ArrayList<Product> products) {
         ArrayList<Product> returnproduct = new ArrayList<>();
         for (Product product : products) {
