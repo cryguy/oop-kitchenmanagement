@@ -64,4 +64,8 @@ class ProductManagement {
         availableProducts = showAllowedProduct(StockManagement.stocks, products);
     }
 
+    void DeleteProduct(Product i) {
+        products.remove(i);
+    }
+
 }
