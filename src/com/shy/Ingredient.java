@@ -15,6 +15,12 @@ class Ingredient {
         this.price = price;
         this.needed = needed;
     }
+    Ingredient(String name, int needed){
+        this.name = name;
+        this.price = 0;
+        this.needed = needed;
+    }
+
     String GetName(){
         return this.name;
     }
