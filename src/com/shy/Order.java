@@ -7,12 +7,12 @@ class Order {
     /**
      * Identifier of order
      */
-    private int identifier;
+    final private int identifier;
 
     /**
      * ArrayList of Products in order
      */
-    private ArrayList<Product> orderList = new ArrayList<>();
+    private final ArrayList<Product> orderList = new ArrayList<>();
 
     /**
      * Creates a new order with the given identifier
@@ -48,7 +48,7 @@ class Order {
      * @param i the product to add
      */
     void AddProduct(Product i) {
-        if (ContainProduct(i)) { // was using orderList.size() just now, and it didnt work cos alot of extra work :P
+        if (ContainProduct(i)) { // was using orderList.size() just now, and it did'nt work cos a'lot of extra work :P
             for (int x = 0; x <= this.orderList.size() - 1; x++) {
                 if (this.orderList.get(x).getName().equals(i.getName())) {
                     this.orderList.get(x).addQuantity(i.getQuantity());
@@ -111,12 +111,14 @@ class Order {
         return this.orderList;
     }
 
-    /**
-     * Delete Product i from orderList
-     * @param i Product to delete
-     */
-    void deleteProduct(Product i) {
-        this.orderList.get(this.orderList.indexOf(i)).setQuantity(0);
-        RemoveEmptyProduct();
-    }
+// --Commented out by Inspection START (11/5/2018 8:34 AM):
+//    /**
+//     * Delete Product i from orderList
+//     * @param i Product to delete
+//     */
+//    void deleteProduct(Product i) {
+//        this.orderList.get(this.orderList.indexOf(i)).setQuantity(0);
+//        RemoveEmptyProduct();
+//    }
+// --Commented out by Inspection STOP (11/5/2018 8:34 AM)
 }

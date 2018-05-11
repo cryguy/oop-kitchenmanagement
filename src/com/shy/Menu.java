@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 
 class Menu {
-    private static Scanner mmo = new Scanner(System.in);
+    final private static Scanner mmo = new Scanner(System.in);
 
     Menu() {
     }
@@ -29,7 +29,7 @@ class Menu {
         }
     }
 
-    void mainmenu() {
+    void mainMenu() {
         int main_menu_op;
         while (true) {
             clear();
@@ -53,6 +53,8 @@ class Menu {
                     inventory();
                     break;
                 case 0:
+                    Json.prettyPrint();
+                    Json.printString();
                     return;
                 default:
                     System.out.print("not found\n");

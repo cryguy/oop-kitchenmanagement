@@ -1,5 +1,7 @@
 package com.shy;
 
+import com.google.gson.reflect.TypeToken;
+
 import java.util.ArrayList;
 
 class ProductManagement {
@@ -58,12 +60,24 @@ class ProductManagement {
         return returnproduct;
     }
 
+    String toJson() {
+        return Json.a.toJson(products);
+    }
+
     static void updateAvailable() {
         for (Product i : availableProducts)
             i.setQuantity(1);
         availableProducts = showAllowedProduct(StockManagement.stocks, products);
     }
 
+    ArrayList<Product> getProducts() {
+        return products;
+    }
+
+    void setProducts(String json) {
+        products = Json.a.fromJson(json, new TypeToken<ArrayList<Product>>() {
+        }.getType());
+    }
     void DeleteProduct(Product i) {
         products.remove(i);
     }

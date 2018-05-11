@@ -3,7 +3,7 @@ package com.shy;
 class Ingredient {
     private final String name;
     private final double price;
-    private int needed;
+    final private int needed;
     Ingredient(String name, double price){
         this.name = name;
         this.price = price;
@@ -15,11 +15,13 @@ class Ingredient {
         this.price = price;
         this.needed = needed;
     }
-    Ingredient(String name, int needed){
-        this.name = name;
-        this.price = 0;
-        this.needed = needed;
-    }
+// --Commented out by Inspection START (11/5/2018 8:33 AM):
+//    Ingredient(String name, int needed){
+//        this.name = name;
+//        this.price = 0;
+//        this.needed = needed;
+//    }
+// --Commented out by Inspection STOP (11/5/2018 8:33 AM)
 
     String GetName(){
         return this.name;

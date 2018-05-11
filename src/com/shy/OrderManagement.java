@@ -1,5 +1,7 @@
 package com.shy;
 
+import com.google.gson.reflect.TypeToken;
+
 import java.util.ArrayList;
 
 class OrderManagement {
@@ -66,6 +68,14 @@ class OrderManagement {
         orders.remove(i);
     }
 
+    void setOrders(String json) {
+        orders = Json.a.fromJson(json, new TypeToken<ArrayList<Order>>() {
+        }.getType());
+    }
+
+    String toJson() {
+        return Json.a.toJson(orders);
+    }
     ArrayList<Order> ShowOrders() {
         return this.orders;
     }
