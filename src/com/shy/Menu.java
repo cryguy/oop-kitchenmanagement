@@ -11,6 +11,7 @@ class Menu {
     Menu() {
     }
 
+    // clear console
     private void clear() {
         final String os = System.getProperty("os.name");
 
@@ -66,42 +67,42 @@ class Menu {
 
     // this would be the order menu
     private void orderMenu() {
-        ProductManagement.updateAvailable();
+        ProductManagement.getInstance().updateAvailable();
         clear();
-        StockManagement.getInstance().PrintStocks();
+        //StockManagement.getInstance().PrintStocks();
         int selection;
         Order order = OrderManagement.getInstance().NewOrder();
         do {
-            if (ProductManagement.availableProducts().isEmpty() && order.GetOrderProduct().size() == 0) {
+            if (ProductManagement.getInstance().availableProducts().isEmpty() && order.GetOrderProduct().size() == 0) {
                 System.out.println("ERROR - ALL PRODUCTS OUT OF STOCK!");
                 return;
-            } else if (ProductManagement.availableProducts().isEmpty() && order.GetOrderProduct().size() != 0)
+            } else if (ProductManagement.getInstance().availableProducts().isEmpty() && order.GetOrderProduct().size() != 0)
                 break;
 
             int x = 0;
-            for (Product i : ProductManagement.availableProducts()) {
+            for (Product i : ProductManagement.getInstance().availableProducts()) {
                 System.out.println(++x + ": " + i.getName());
             }
 
             System.out.println("0 : Show Ordered & Confirm Order");
             selection = mmo.nextInt();
-            if (selection != 0 && selection >= 1 && (selection - 1) <= ProductManagement.availableProducts().size() - 1) {
+            if (selection != 0 && selection >= 1 && (selection - 1) <= ProductManagement.getInstance().availableProducts().size() - 1) {
                 try {
-                    order.AddProduct(ProductManagement.availableProducts().get(selection - 1).clone()); // WELL, FIXED IT, Apparently only the Pointer/Reference to object is added
+                    order.AddProduct(ProductManagement.getInstance().availableProducts().get(selection - 1).clone()); // WELL, FIXED IT, Apparently only the Pointer/Reference to object is added
                 } catch (CloneNotSupportedException e) {
                     e.printStackTrace();
                 }
-            } else if (selection != 0 && ((selection - 1) >= (ProductManagement.availableProducts().size() - 1) || selection - 1 < 0)) {
+            } else if (selection != 0 && ((selection - 1) >= (ProductManagement.getInstance().availableProducts().size() - 1) || selection - 1 < 0)) {
                 System.out.println("Error Please Select Again.");
             } else if (selection != 0) System.out.println("Error");
 
-            System.out.println(order.showOrder());
-            ProductManagement.updateAvailable();
+            //   System.out.println(order.showOrder());
+            ProductManagement.getInstance().updateAvailable();
         } while (selection != 0);
 
         Cashier a = new Cashier();
         a.showOrder(order);
-        StockManagement.getInstance().PrintStocks();
+        //StockManagement.getInstance().PrintStocks();
 
     }
 

@@ -21,17 +21,17 @@ class ProductManagement {
         if(instance == null) {
             instance = new ProductManagement();
         }
-        updateAvailable();
         return instance;
     }
 
-    static ArrayList<Product> availableProducts() {
+    ArrayList<Product> availableProducts() {
+        updateAvailable();
         for (Product i : availableProducts)
             i.setQuantity(1);
         return availableProducts;
     }
 
-    private static boolean productAvailable(ArrayList<Stock> stocks, Product product) {
+    private boolean productAvailable(ArrayList<Stock> stocks, Product product) {
         //boolean[] t = new boolean[product.getIngredients().size()];
         //int incre = 0;
         for (Ingredient i : product.getIngredients())
@@ -51,7 +51,8 @@ class ProductManagement {
             //System.out.println(++x + ". " + i.GetName() + " " + i.getLeft());
         }
     }
-    private static ArrayList<Product> showAllowedProduct(ArrayList<Stock> stocks, ArrayList<Product> products) {
+
+    private ArrayList<Product> showAllowedProduct(ArrayList<Stock> stocks, ArrayList<Product> products) {
         ArrayList<Product> returnproduct = new ArrayList<>();
         for (Product product : products) {
             if (productAvailable(stocks, product))
@@ -64,7 +65,7 @@ class ProductManagement {
         return Json.a.toJson(products);
     }
 
-    static void updateAvailable() {
+    void updateAvailable() {
         for (Product i : availableProducts)
             i.setQuantity(1);
         availableProducts = showAllowedProduct(StockManagement.stocks, products);
