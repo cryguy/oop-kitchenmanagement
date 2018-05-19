@@ -8,5 +8,11 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="com.google.code.gson:gson:2.8.4" level="application" />
+    <orderEntry type="library" name="com.github.signaflo:timeseries:0.4" level="application" />
+    <orderEntry type="library" name="org.ejml:all:0.30" level="application" />
+    <orderEntry type="library" name="Simple Logging Facade for Java:1.8.0-beta2" level="application" />
+    <orderEntry type="library" name="org.knowm.xchart:xchart:3.5.1" level="application" />
+    <orderEntry type="library" name="com.github.haifengl:smile-core:1.5.1" level="application" />
+    <orderEntry type="library" name="com.google.guava:guava:18.0" level="application" />
   </component>
 </module>
