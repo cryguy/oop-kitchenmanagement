@@ -7,9 +7,52 @@ import com.github.signaflo.timeseries.forecast.Forecast;
 import com.github.signaflo.timeseries.model.arima.Arima;
 import com.github.signaflo.timeseries.model.arima.ArimaOrder;
 
+import java.util.HashMap;
+import java.util.Map;
+
 class Prediction {
+    // TODO: 20/May/2018 Maybe add function to see if forecasted result is accurate and print accuracy %
+
+    private final ArimaOrder modelOrder = ArimaOrder.order(0, 1, 1, 0, 1, 1);
+    private Map<String, TimeSeries> TimeSeriesMap = new HashMap<>();
+    private Map<String, Forecast> forecastMap = new HashMap<>();
+
     Prediction(){}
 
+    // call addData in Inventory, might need another item in tbe array to track stock use, have to add a feature to reset that and then "close" today's inventory
+    // TODO: 20/May/2018 Add helper class to get and set this in StockManagement, Or just add an index to the StockManagement's StockUse hashmap to increment the array
+    // TODO: 20/May/2018 Instead of multiple copies of the same data
+    void addData(String name, double[] data) {
+        TimeSeriesMap.put(name, Ts.newWeeklySeries(data));
+    }
+
+    // call resetData in the Inventory loop
+    void resetData() {
+        TimeSeriesMap.clear();
+    }
+
+    private void runPrediction() {
+        forecastMap.clear(); // clear existing data
+        for (Map.Entry<String, TimeSeries> entry : TimeSeriesMap.entrySet()) {
+            forecastMap.put(entry.getKey(), Arima.model(entry.getValue(), modelOrder, TimePeriod.halfMonth()).forecast(1));
+        }
+    }
+
+    // TODO: 20/May/2018 Change the way its printed to accomodate multiple days of prediction
+    void printPredictions() {
+        runPrediction();
+        System.out.println("---------- Prediction ----------");
+        System.out.println("Name       Prediction LOW-UP-MID");
+        for (Map.Entry<String, Forecast> entry : forecastMap.entrySet()) {
+            System.out.printf("%-11s", entry.getKey());
+            System.out.printf("%11f %2f-%2f-%2f",
+                    entry.getValue().pointEstimates().at(0),
+                    entry.getValue().lowerPredictionInterval().at(0),
+                    entry.getValue().upperPredictionInterval().at(0),
+                    entry.getValue().pointEstimates().at(0));
+        }
+    }
+/*
     static void test(){
         TimeSeries series = Ts.newWeeklySeries(18.0,12.0,15.0,5); // input data here
         ArimaOrder modelOrder = ArimaOrder.order(0, 1, 1, 0, 1, 1);
@@ -28,6 +71,6 @@ class Prediction {
         TODO: 19/May/2018 Make function to print out forecast with upper and lower boundaries and then the expected usage of inventory
         TODO: 19/May/2018 Implement the prediction class in Inventory instead of here
         */
-    }
+    //}
 
 }

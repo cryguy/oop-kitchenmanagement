@@ -3,10 +3,13 @@ package com.shy;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 class StockManagement {
     // StockManagement is an object that contains the array of Stocks
-    static ArrayList<Stock> stocks = new ArrayList<>();
+    ArrayList<Stock> stocks = new ArrayList<>();
+    private Map<String, Integer> stockuse = new HashMap<>();
     private static StockManagement instance = null;
 
     private StockManagement() {
@@ -43,11 +46,21 @@ class StockManagement {
         for (Ingredient i : product.getIngredients())
             for (Stock j : stocks)
                 if (j.GetName().equals(i.GetName())) {
+                    addToList(i.GetName(), i.GetNeeded() * product.getQuantity());
                     j.reduceLeft(i.GetNeeded() * product.getQuantity());
                     break;
                 }
     }
 
+    private void addToList(String name, int numtoadd) {
+        stockuse.put(name, stockuse.getOrDefault(name, 0) + numtoadd);
+    }
+
+    void printPairsDebug() {
+        for (Map.Entry<String, Integer> entry : stockuse.entrySet()) {
+            System.out.println(entry.getKey() + " : " + entry.getValue());
+        }
+    }
     void setStocks(String json) {
         stocks = Json.a.fromJson(json, new TypeToken<ArrayList<Stock>>() {
         }.getType());
@@ -63,4 +76,7 @@ class StockManagement {
     ArrayList<Stock> getStock() {
         return stocks;
     }
+
+
 }
+

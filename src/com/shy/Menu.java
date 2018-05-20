@@ -147,9 +147,9 @@ class Menu {
                                 break outerloop;
                         } while (inventoryselect - 1 < 0);
                         int needed = getInput("Enter number of - \"" + StockManagement
-                                .stocks.get(inventoryselect - 1).getName() + "\" needed", new input.IntegerInputGrabber());
-                        productIngredient.add(new Ingredient(StockManagement.stocks.get(inventoryselect - 1).getName(),
-                                StockManagement.stocks.get(inventoryselect - 1).getPrice(), needed));
+                                .getInstance().stocks.get(inventoryselect - 1).getName() + "\" needed", new input.IntegerInputGrabber());
+                        productIngredient.add(new Ingredient(StockManagement.getInstance().stocks.get(inventoryselect - 1).getName(),
+                                StockManagement.getInstance().stocks.get(inventoryselect - 1).getPrice(), needed));
                     }
                     ProductManagement.products.add(new Product(name, price, productIngredient));
                     break;
@@ -210,9 +210,9 @@ class Menu {
                     System.out.println();
                     int selection = getInput("Enter index to delete : ", new input.IntegerInputGrabber());
 
-                    if (selection != 0 && selection >= 1 && (selection - 1) <= StockManagement.stocks.size() - 1) {
-                        StockManagement.getInstance().DeleteStock(StockManagement.stocks.get(selection - 1));
-                    } else if (selection != 0 && ((selection - 1) >= (StockManagement.stocks.size() - 1) || selection - 1 < 0)) {
+                    if (selection != 0 && selection >= 1 && (selection - 1) <= StockManagement.getInstance().stocks.size() - 1) {
+                        StockManagement.getInstance().DeleteStock(StockManagement.getInstance().stocks.get(selection - 1));
+                    } else if (selection != 0 && ((selection - 1) >= (StockManagement.getInstance().stocks.size() - 1) || selection - 1 < 0)) {
                         System.out.println("Error Please Select Again.");
                     } else if (selection != 0) System.out.println("Error");
 

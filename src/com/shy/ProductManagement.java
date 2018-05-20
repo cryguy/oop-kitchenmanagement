@@ -68,7 +68,7 @@ class ProductManagement {
     void updateAvailable() {
         for (Product i : availableProducts)
             i.setQuantity(1);
-        availableProducts = showAllowedProduct(StockManagement.stocks, products);
+        availableProducts = showAllowedProduct(StockManagement.getInstance().stocks, products);
     }
 
     ArrayList<Product> getProducts() {
