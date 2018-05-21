@@ -35,7 +35,7 @@ class Menu {
         while (true) {
             clear();
             OrderManagement.getInstance().CheckEmptyOrderAndRemove();
-            System.out.print("Main Menu\n\n 1. Order\n 2. Order Management\n 3. Product Management\n 4. Inventory Management\n 0. Exit\n\nChoose your option: ");
+            System.out.print("Main Menu\n\n 1. Order\n 2. Order Management\n 3. Product Management\n 4. Inventory Management\n 5. End Day\n 0. Exit\n\nChoose your option: ");
             main_menu_op = mmo.nextInt();
             switch (main_menu_op) {
                 case 1:
@@ -52,6 +52,10 @@ class Menu {
                     break;
                 case 4:
                     inventory();
+                    break;
+                case 5:
+                    //StockManagement.getInstance().printPairsDebug();
+                    StockManagement.getInstance().endDay();
                     break;
                 case 0:
                     Json.prettyPrint();

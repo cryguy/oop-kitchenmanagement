@@ -17,11 +17,22 @@ class Prediction {
     private Map<String, TimeSeries> TimeSeriesMap = new HashMap<>();
     private Map<String, Forecast> forecastMap = new HashMap<>();
 
-    Prediction(){}
+    private static Prediction instance = null;
 
-    // call addData in Inventory, might need another item in tbe array to track stock use, have to add a feature to reset that and then "close" today's inventory
-    // TODO: 20/May/2018 Add helper class to get and set this in StockManagement, Or just add an index to the StockManagement's StockUse hashmap to increment the array
-    // TODO: 20/May/2018 Instead of multiple copies of the same data
+    private Prediction() {
+    }
+
+    /*
+    Prevents us from making more than 1 instance and causing problems
+    -- SINGLETON
+     */
+    synchronized static Prediction getInstance() {
+        if (instance == null) {
+            instance = new Prediction();
+        }
+        return instance;
+    }
+
     void addData(String name, double[] data) {
         TimeSeriesMap.put(name, Ts.newWeeklySeries(data));
     }
@@ -31,7 +42,7 @@ class Prediction {
         TimeSeriesMap.clear();
     }
 
-    private void runPrediction() {
+    void runPrediction() {
         forecastMap.clear(); // clear existing data
         for (Map.Entry<String, TimeSeries> entry : TimeSeriesMap.entrySet()) {
             forecastMap.put(entry.getKey(), Arima.model(entry.getValue(), modelOrder, TimePeriod.halfMonth()).forecast(1));
@@ -45,13 +56,14 @@ class Prediction {
         System.out.println("Name       Prediction LOW-UP-MID");
         for (Map.Entry<String, Forecast> entry : forecastMap.entrySet()) {
             System.out.printf("%-11s", entry.getKey());
-            System.out.printf("%11f %2f-%2f-%2f",
+            System.out.printf("%10.0f  %2.0f %2.0f  %2.0f\n",
                     entry.getValue().pointEstimates().at(0),
                     entry.getValue().lowerPredictionInterval().at(0),
                     entry.getValue().upperPredictionInterval().at(0),
                     entry.getValue().pointEstimates().at(0));
         }
     }
+
 /*
     static void test(){
         TimeSeries series = Ts.newWeeklySeries(18.0,12.0,15.0,5); // input data here
@@ -66,11 +78,6 @@ class Prediction {
              --------------------------------------------------------------
             | 0001-01-29T00:00  | 7.999710941  | 0.159855042  | 15.83956684 |
          */
-        /*
-        TODO: 19/May/2018 Make function to get inventory at end of each day and if data size < 7, input the data into newWeeklySeries
-        TODO: 19/May/2018 Make function to print out forecast with upper and lower boundaries and then the expected usage of inventory
-        TODO: 19/May/2018 Implement the prediction class in Inventory instead of here
-        */
     //}
 
 }
