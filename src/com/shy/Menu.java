@@ -143,6 +143,7 @@ class Menu {
                     System.out.println("---- Stock List ----");
                     System.out.println("Num  Name       Left");
                     StockManagement.getInstance().PrintStocks();
+                    // here exit whille loop
                     outerloop:
                     while (true) {
                         do {
@@ -150,8 +151,8 @@ class Menu {
                             if (inventoryselect == 0)
                                 break outerloop;
                         } while (inventoryselect - 1 < 0);
-                        int needed = getInput("Enter number of - \"" + StockManagement
-                                .getInstance().stocks.get(inventoryselect - 1).getName() + "\" needed", new input.IntegerInputGrabber());
+                        int needed = getInput("Enter number of \"" + StockManagement
+                                .getInstance().stocks.get(inventoryselect - 1).getName() + " needed - ", new input.IntegerInputGrabber());
                         productIngredient.add(new Ingredient(StockManagement.getInstance().stocks.get(inventoryselect - 1).getName(),
                                 StockManagement.getInstance().stocks.get(inventoryselect - 1).getPrice(), needed));
                     }
@@ -182,6 +183,10 @@ class Menu {
             }
         }
     }
+
+    private void ordermanage() {
+
+    }
     private void inventory() {
         int menu;
         while (true) {
@@ -196,13 +201,28 @@ class Menu {
                     StockManagement.getInstance().PrintStocks();
                     break;
                 case 2:
+                    // add stock here
+                    if (StockManagement.getInstance().stocks.size() == 0)
+                        addaStock();
+                    else {
+                        System.out.println("---- Stock List ----");
+                        System.out.println("Num  Name       Left");
+                        StockManagement.getInstance().PrintStocks();
+                        System.out.println("0    Add Stock");
+                        int stockselect = getInput("Enter index Add : ", new input.IntegerInputGrabber());
 
-                    System.out.print("Enter Name of Item : ");
-                    String name = mmo.nextLine();
-                    double price = getInput("Enter Price of " + name + " : ", new input.DoubleInputGrabber());
-                    int left = getInput("Enter Number of " + name + " in stock : ", new input.IntegerInputGrabber());
-
-                    StockManagement.getInstance().AddStock(name, price, left);
+                        if (stockselect >= 1 && (stockselect - 1) >= StockManagement.getInstance().stocks.size() - 1) {
+                            int[] prediction = Prediction.getInstance().getPrediction(StockManagement.getInstance().stocks.get(stockselect - 1).getName());
+                            if (prediction[0] > 0) {
+                                System.out.println("Recommended Amount of stock to add - " + prediction[0]);
+                                System.out.println("Min - " + prediction[1] + " Max - " + prediction[2]);
+                            }
+                            int toadd = getInput("Enter number of \"" + StockManagement.getInstance().stocks.get(stockselect - 1).getName() + "\" to add - ", new input.IntegerInputGrabber());
+                            StockManagement.getInstance().addStockQuantity(stockselect - 1, toadd);
+                        } else
+                            mmo.nextLine();
+                        addaStock();
+                    }
                     break;
                 case 3:
                     System.out.println("-- Stock List --");
@@ -227,7 +247,13 @@ class Menu {
         }
     }
 
-
+    void addaStock() {
+        System.out.print("Enter Name of Item : ");
+        String name = mmo.nextLine();
+        double price = getInput("Enter Price of " + name + " : ", new input.DoubleInputGrabber());
+        int left = getInput("Enter Number of " + name + " in stock : ", new input.IntegerInputGrabber());
+        StockManagement.getInstance().AddStock(name, price, left);
+    }
     private <T> T getInput(String prompt, input.InputGrabber<T> grabber) {
         System.out.print(prompt);
         do {

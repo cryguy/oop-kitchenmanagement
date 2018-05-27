@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 class Prediction {
+
     // TODO: 20/May/2018 Maybe add function to see if forecasted result is accurate and print accuracy %
 
     private final ArimaOrder modelOrder = ArimaOrder.order(0, 1, 1, 0, 1, 1);
@@ -26,6 +27,7 @@ class Prediction {
     Prevents us from making more than 1 instance and causing problems
     -- SINGLETON
      */
+
     synchronized static Prediction getInstance() {
         if (instance == null) {
             instance = new Prediction();
@@ -41,6 +43,7 @@ class Prediction {
     void resetData() {
         TimeSeriesMap.clear();
     }
+
 
     void runPrediction() {
         forecastMap.clear(); // clear existing data
@@ -62,6 +65,17 @@ class Prediction {
                     entry.getValue().upperPredictionInterval().at(0),
                     entry.getValue().pointEstimates().at(0));
         }
+    }
+
+    int[] getPrediction(String name) {
+        int[] a = new int[3];
+        if (forecastMap.containsKey(name)) // check if it exists in the map, if not we will crash
+        {
+            a[0] = (int) forecastMap.get(name).pointEstimates().at(0);
+            a[1] = (int) forecastMap.get(name).lowerPredictionInterval().at(0);
+            a[2] = (int) forecastMap.get(name).upperPredictionInterval().at(0);
+        }
+        return a;
     }
 
 /*

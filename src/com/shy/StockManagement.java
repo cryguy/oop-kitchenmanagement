@@ -2,10 +2,7 @@ package com.shy;
 
 import com.google.gson.reflect.TypeToken;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 class StockManagement {
     // StockManagement is an object that contains the array of Stocks
@@ -40,7 +37,6 @@ class StockManagement {
             //System.out.println(++x + ". " + i.GetName() + " " + i.getLeft());
         }
     }
-
     void ReduceQuantity(Product product) {
         for (Ingredient i : product.getIngredients())
             for (Stock j : stocks)
@@ -51,7 +47,9 @@ class StockManagement {
                 }
     }
 
-
+    void addStockQuantity(int index, int numbertoadd) {
+        this.getStock().get(index).addLeft(numbertoadd);
+    }
     void endDay() {
         for (Map.Entry<String, Integer> entry : daycounter.entrySet())
             entry.setValue(entry.getValue() + 1);
@@ -62,7 +60,7 @@ class StockManagement {
                     target[i] = entry.getValue().get(i); // to unBox Double to double...
                 }
                 //System.out.println(entry.getKey() + " " + Arrays.toString(target));
-                Prediction.getInstance().addData(entry.getKey(), target);
+                //Prediction.getInstance().addData(entry.getKey(), target);
             }
         }
         Prediction.getInstance().runPrediction();
