@@ -111,14 +111,14 @@ class Order {
         return this.orderList;
     }
 
-// --Commented out by Inspection START (11/5/2018 8:34 AM):
-//    /**
-//     * Delete Product i from orderList
-//     * @param i Product to delete
-//     */
-//    void deleteProduct(Product i) {
-//        this.orderList.get(this.orderList.indexOf(i)).setQuantity(0);
-//        RemoveEmptyProduct();
-//    }
-// --Commented out by Inspection STOP (11/5/2018 8:34 AM)
+
+    /**
+     * delete product i from orderlist
+     *
+     * @param i product to delete
+     */
+    void deleteProduct(Product i) {
+        this.orderList.get(this.orderList.indexOf(i)).setQuantity(0);
+        RemoveEmptyProduct();
+    }
 }
