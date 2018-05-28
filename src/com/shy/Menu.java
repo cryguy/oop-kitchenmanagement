@@ -44,7 +44,7 @@ class Menu {
                     break;
                 case 2:
                     System.out.print("2\n");
-
+                    orderManage();
                     break;
                 case 3:
                     System.out.print("3\n");
@@ -109,7 +109,6 @@ class Menu {
         //StockManagement.getInstance().PrintStocks();
 
     }
-
     private void productManage() {
         int menu;
         while (true) {
@@ -184,8 +183,24 @@ class Menu {
         }
     }
 
-    private void ordermanage() {
+    private void orderManage() {
+        int menu;
+        while (true) {
+            clear();
+            System.out.println("Order Management\n\n 1. Print Order\n 2. Add Order\n 3. Edit Order\n 4. Remove Order\n 0. Exit\n\nChoose your option: ");
+            menu = mmo.nextInt();
+            mmo.nextLine();
+            switch (menu) {
+                case 1:
+                    System.out.println("---- Order List ----");
+                    System.out.println("Order      Price");
+                    OrderManagement.getInstance().ShowOrders();
+                    break;
+                case 2:
 
+
+            }
+        }
     }
     private void inventory() {
         int menu;
