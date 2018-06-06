@@ -1,5 +1,4 @@
 package com.shy;
-
 import com.github.signaflo.timeseries.TimePeriod;
 import com.github.signaflo.timeseries.TimeSeries;
 import com.github.signaflo.timeseries.Ts;
@@ -12,6 +11,10 @@ import java.util.Map;
 
 class Prediction {
 
+
+    /**
+     * declare variable of prediction
+     */
     // TODO: 20/May/2018 Maybe add function to see if forecasted result is accurate and print accuracy %
 
     private final ArimaOrder modelOrder = ArimaOrder.order(0, 1, 1, 0, 1, 1);
@@ -23,9 +26,8 @@ class Prediction {
     private Prediction() {
     }
 
-    /*
-    Prevents us from making more than 1 instance and causing problems
-    -- SINGLETON
+    /**
+     *Prevents us from making more than 1 instance and causing problems
      */
 
     synchronized static Prediction getInstance() {
@@ -52,6 +54,10 @@ class Prediction {
         }
     }
 
+
+    /**
+     *print out the prediction of the ingredient that need to prepare
+     */
     // TODO: 20/May/2018 Change the way its printed to accomodate multiple days of prediction
     void printPredictions() {
         runPrediction();
@@ -66,6 +72,7 @@ class Prediction {
                     entry.getValue().pointEstimates().at(0));
         }
     }
+
 
     int[] getPrediction(String name) {
         int[] a = new int[3];

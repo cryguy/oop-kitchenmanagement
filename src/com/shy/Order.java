@@ -1,5 +1,4 @@
 package com.shy;
-
 import java.util.ArrayList;
 
 class Order {
@@ -64,7 +63,6 @@ class Order {
      *
      * @return price of Order
      */
-    //void RemoveProduct
     double getPrice() {
         double price = 0;
         for (Product i : this.orderList) {
@@ -72,6 +70,12 @@ class Order {
         }
         return price;
     }
+
+    /**
+     * remove the order list if not found any product inside
+     *
+     * @return ret
+     */
 
     private void RemoveEmptyProduct() {
         this.orderList.removeIf((Product product) -> {

@@ -1,5 +1,4 @@
 package com.shy;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -8,6 +7,10 @@ import java.util.Scanner;
 class Menu {
     final private static Scanner mmo = new Scanner(System.in);
 
+
+    /**
+     * Default constructor of menu
+     */
     Menu() {
     }
 
@@ -29,6 +32,10 @@ class Menu {
             }
         }
     }
+
+    /**
+     *Declare the datatype of main_menu_op and showing the option to let user choose
+     */
 
     void mainMenu() {
         int main_menu_op;
@@ -70,6 +77,10 @@ class Menu {
         }
     }
 
+
+    /**
+     *Check whether the thing store inside the product management is it empty and show respond
+     */
     private void orderMenu(Order order) {
         ProductManagement.getInstance().updateAvailable();
         clear();
@@ -87,6 +98,10 @@ class Menu {
                 System.out.println(++x + ": " + i.getName());
             }
 
+
+            /**
+             *show the orderr and confirm for the order if the selection from user is not equal to 0
+             */
             System.out.println("0 : Show Ordered & Confirm Order");
             selection = mmo.nextInt();
             if (selection != 0 && selection >= 1 && (selection - 1) <= ProductManagement.getInstance().availableProducts().size() - 1) {
@@ -105,6 +120,7 @@ class Menu {
         //StockManagement.getInstance().PrintStocks();
 
     }
+
     // this would be the order menu
    /* private void orderMenu() {
         ProductManagement.getInstance().updateAvailable();
@@ -146,6 +162,11 @@ class Menu {
 
     }
     */
+
+
+    /**
+     *if select inside product manage it will show you the ouptput like this
+     */
     private void productManage() {
         int menu;
         while (true) {
@@ -155,6 +176,10 @@ class Menu {
             mmo.nextLine();
             switch (menu) {
                 case 1:
+
+                    /**
+                     *show all the product details that have store
+                     */
                     System.out.println("---- Product List ----");
                     System.out.println("Num  Name        Price"); // 2 space after \t\t
                     if (ProductManagement.products.isEmpty())
@@ -162,7 +187,9 @@ class Menu {
                     ProductManagement.getInstance().PrintProduct();
                     break;
                 case 2:
-
+                    /**
+                     *If store is empty ask user need to store new in stock or not
+                     */
                     clear();
                     if (StockManagement.getInstance().IsEmpty()) {
                         System.err.println("Nothing is in stock !");
@@ -171,6 +198,11 @@ class Menu {
                         mmo.nextLine();
                         break;
                     }
+
+
+                    /**
+                     *if user enter and continue prompt user to enter product name and price
+                     */
                     System.out.print("Enter Name of Product : ");
                     String name = mmo.nextLine();
                     double price = getInput("Enter Price of " + name + " : ", new input.DoubleInputGrabber());
@@ -180,6 +212,8 @@ class Menu {
                     System.out.println("Num  Name       Left");
                     StockManagement.getInstance().PrintStocks();
                     // here exit whille loop
+
+
                     outerloop:
                     while (true) {
                         do {
@@ -196,7 +230,7 @@ class Menu {
                     break;
                 case 3:
 
-                    
+
                     System.out.println("---- Product List ----");
 
                     if (ProductManagement.products.isEmpty()) {
@@ -220,6 +254,10 @@ class Menu {
         }
     }
 
+
+    /**
+     *Take the order arraylist i for edit  and prompt user which index they wish to remove
+     */
     private void orderEdit(Order i) {
 
         int orderSelect;
@@ -240,6 +278,10 @@ class Menu {
 
     }
 
+
+    /**
+     *its a method to prompt users to choose the option if they choose ordermanagement in mainmenu
+     */
     private void orderManage() {
         int menu;
         while (true) {
@@ -248,11 +290,19 @@ class Menu {
             menu = mmo.nextInt();
             mmo.nextLine();
             switch (menu) {
+
+                /**
+                 *print all the order details come out
+                 */
                 case 1:
                     System.out.println("---- Order List ----");
                     System.out.println("Order   Quantity   Price");
                     Cashier.showOrders();//OrderManagement.getInstance().ShowOrders();
                     break;
+
+                /**
+                 * it is for edit order and show which one index want to edit
+                 */
                 case 2:
                     Cashier.showOrders();
                     OrderManagement.getInstance().ShowOrders();
@@ -260,6 +310,11 @@ class Menu {
                     int index = getInput("Enter index Order : ", new input.IntegerInputGrabber());
                     orderEdit(OrderManagement.getInstance().GetOrder(index - 1));
                     break;
+
+
+                /**
+                 *It is for the remove order and prompt user to enter which index want to remove
+                 */
                 case 3:
                     OrderManagement.getInstance().ShowOrders();
                     System.out.println("Enter index");
@@ -273,6 +328,11 @@ class Menu {
             }
         }
     }
+
+
+    /**
+     * It is for inventory option, prompt user which option that they wish to usr
+     */
     private void inventory() {
         int menu;
         while (true) {
@@ -282,11 +342,19 @@ class Menu {
             mmo.nextLine();
             switch (menu) {
                 case 1:
+
+                    /**
+                     *print out all the stock details
+                     */
                     System.out.println("---- Stock List ----");
                     System.out.println("Num  Name       Left");
                     StockManagement.getInstance().PrintStocks();
                     break;
                 case 2:
+
+                    /**
+                     * add the stock into the index user want
+                     */
                     // add stock here
                     if (StockManagement.getInstance().stocks.size() == 0)
                         addaStock();
@@ -311,6 +379,10 @@ class Menu {
                     }
                     break;
                 case 3:
+
+                    /**
+                     *remove the stock
+                     */
                     System.out.println("-- Stock List --");
                     if (StockManagement.getInstance().IsEmpty()) {
                         System.out.println("Nothing is in stock !");
@@ -333,6 +405,9 @@ class Menu {
         }
     }
 
+    /**
+     *add the stock by prompt user to enter the stock details
+     */
     void addaStock() {
         System.out.print("Enter Name of Item : ");
         String name = mmo.nextLine();
@@ -340,6 +415,8 @@ class Menu {
         int left = getInput("Enter Number of " + name + " in stock : ", new input.IntegerInputGrabber());
         StockManagement.getInstance().AddStock(name, price, left);
     }
+
+
     private <T> T getInput(String prompt, input.InputGrabber<T> grabber) {
         System.out.print(prompt);
         do {

@@ -1,9 +1,12 @@
 package com.shy;
-
 import com.google.gson.reflect.TypeToken;
 
 import java.util.*;
 
+
+/**
+ * declare the variable of stockmanagement
+ */
 class StockManagement {
     // StockManagement is an object that contains the array of Stocks
     ArrayList<Stock> stocks = new ArrayList<>();
@@ -14,6 +17,10 @@ class StockManagement {
     private StockManagement() {
     }
 
+    /**
+     *make sure that will only one person can be access into the stock management at the same time
+     */
+
     synchronized static StockManagement getInstance() {
         if(instance == null) {
             instance = new StockManagement();
@@ -21,22 +28,42 @@ class StockManagement {
         return instance;
     }
 
+
+    /**
+     *to check whether the stock is it empty
+     * @return value of stocks
+     */
+
     boolean IsEmpty() {
         return stocks.isEmpty();
     }
+
+
+    /**
+     *for adding new stock and store them into the stocks with details
+     */
 
     void AddStock(String name, double price, int left) {
         stocks.add(new Stock(name, price, left));
     }
 
+
+    /**
+     *get the stocks details
+     */
+
     void PrintStocks(){
         int x = 0;
-        for (Stock i : stocks)
-        {
+        for (Stock i : stocks) {
             System.out.printf("%d\t %s\t\t%d%n", ++x, i.getName(), i.getLeft());
             //System.out.println(++x + ". " + i.GetName() + " " + i.getLeft());
         }
     }
+
+
+    /**
+     *check if the ingredient used have stock and reduce the ingredient in stock
+     */
     void ReduceQuantity(Product product) {
         for (Ingredient i : product.getIngredients())
             for (Stock j : stocks)
@@ -47,9 +74,18 @@ class StockManagement {
                 }
     }
 
+    /**
+     *add the stock for ingredient quantity
+     */
+
     void addStockQuantity(int index, int numbertoadd) {
         this.getStock().get(index).addLeft(numbertoadd);
     }
+
+
+    /**
+     *
+     */
     void endDay() {
         for (Map.Entry<String, Integer> entry : daycounter.entrySet())
             entry.setValue(entry.getValue() + 1);
@@ -67,6 +103,7 @@ class StockManagement {
         Prediction.getInstance().printPredictions();
 
     }
+
 
     private void addToList(String name, double numtoadd) {
         daycounter.put(name, daycounter.getOrDefault(name, 0));
@@ -87,6 +124,7 @@ class StockManagement {
             System.out.println(entry.getKey() + " : " + Arrays.toString(entry.getValue().toArray()));
         }
     }
+
     void setStocks(String json) {
         instance = Json.a.fromJson(json, new TypeToken<StockManagement>() {
         }.getType());
