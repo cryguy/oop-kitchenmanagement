@@ -1,10 +1,13 @@
 package com.shy;
-
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 
 class ProductManagement {
+
+    /**
+     * declare variable of product management
+     */
     // TODO : ADD method to add stock
     // StockManagement is an object that contains the array of Stocks
     static ArrayList<Product> products = new ArrayList<>();
@@ -13,10 +16,11 @@ class ProductManagement {
 
     private ProductManagement() {
     }
-    /*
-    Prevents us from making more than 1 instance and causing problems
-    -- SINGLETON
+
+    /**
+     * Prevents us from making more than 1 instance and causing problems
      */
+
     synchronized static ProductManagement getInstance() {
         if(instance == null) {
             instance = new ProductManagement();
@@ -24,6 +28,11 @@ class ProductManagement {
         return instance;
     }
 
+
+    /**
+     *to print out the product that available
+     * @return available product details
+     */
     ArrayList<Product> availableProducts() {
         updateAvailable();
         for (Product i : availableProducts)
@@ -31,6 +40,10 @@ class ProductManagement {
         return availableProducts;
     }
 
+
+    /**
+     *to check the product that is available now
+     */
     private boolean productAvailable(ArrayList<Stock> stocks, Product product) {
         //boolean[] t = new boolean[product.getIngredients().size()];
         //int incre = 0;
@@ -44,6 +57,11 @@ class ProductManagement {
         return true;
     }
 
+
+    /**
+     *print the product that have been ordered
+     */
+
     void PrintProduct() {
         int x = 0;
         for (Product i : products) {
@@ -52,6 +70,10 @@ class ProductManagement {
         }
     }
 
+
+    /**
+     *show the product that have ingredient in stock to make
+     */
     private ArrayList<Product> showAllowedProduct(ArrayList<Stock> stocks, ArrayList<Product> products) {
         ArrayList<Product> returnproduct = new ArrayList<>();
         for (Product product : products) {
@@ -61,9 +83,11 @@ class ProductManagement {
         return returnproduct;
     }
 
+
     String toJson() {
         return Json.a.toJson(products);
     }
+
 
     void updateAvailable() {
         for (Product i : availableProducts)

@@ -1,26 +1,55 @@
 package com.shy;
-
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 
+
 class OrderManagement {
-        private ArrayList<Order> orders = new ArrayList<>();
-        private static OrderManagement instance = null;
-        private int counter = 1;
+
+
+    /**
+     * singleton of ordermanagement to make sure it will only has one access at the same time
+     */
+    private static OrderManagement instance = null;
+    /**
+     * array list or ordermanagement
+     */
+    private ArrayList<Order> orders = new ArrayList<>();
+    /**
+     * declare datatype of counter
+     */
+    private int counter = 1;
+
+
+    /**
+     * default constructor of ordermanagement and cannot directly access by public
+     */
 
     private OrderManagement() {
     }
 
+
+    /**
+     *make sure it will have only one can access to OrderManagement at the same time
+     * and check the instance is it null, if it is, it will create a new ordermanagement object
+     * @return instance's value
+     */
+
     synchronized static OrderManagement getInstance() {
-        if (instance == null) {
-            instance = new OrderManagement();
+        if (instance == null) { // check is it instance exist
+            instance = new OrderManagement(); //if instance exist, create a new object for OrderManagement
         }
         return instance;
     }
 
-    void CheckEmptyOrderAndRemove() {
-        orders.removeIf((Order order) -> {
+
+    /**
+     * Method to check the orders arraylist is it empty
+     * if it is empty, remove the array list
+     */
+
+    void CheckEmptyOrderAndRemove() { //Method to check if the order is empty
+        orders.removeIf((Order order) -> { // Remove the order list if the condition meet
             boolean ret = order.GetOrderProduct().isEmpty();
             if (ret)
                 System.out.println("Deleting Order - " + order.getName() + "   which is empty"); // added this for the logging , can be removed and used as a 1 liner
@@ -43,6 +72,11 @@ class OrderManagement {
             }
             */
 
+
+    /**
+     *if meet new order counter will +1 and in arraylist of order will +1
+     */
+
     Order NewOrder() {
         Order i = new Order(counter++);
         orders.add(i);
@@ -50,6 +84,12 @@ class OrderManagement {
         // counter works better than size, because we will
         // need to check for a lot of other stuff if we use size()+1
     }
+
+
+    /**
+     *Get the details in order arraylist
+     * @return to new order
+     */
 
     Order GetOrder(int i) {
         for (int x = 0; x <= this.orders.size(); x++) {
@@ -60,22 +100,48 @@ class OrderManagement {
         return NewOrder(); // wont ever happen but who knows...
     }
 
+
+    /**
+     *method to save order and add the order in orders arraylist
+     */
+
     void SaveOrder(Order i) {
         orders.add(i);
     }
 
+
+    /**
+     *method to delete order and remove the order in orders arraylist
+     */
+
     void DeleteOrder(Order i) {
         orders.remove(i);
     }
+
+
+    /**
+     *set the orders arraylist from json
+     */
 
     void setOrders(String json) {
         orders = Json.a.fromJson(json, new TypeToken<ArrayList<Order>>() {
         }.getType());
     }
 
+
+    /**
+     * @return orders details from json to string
+     */
+
     String toJson() {
         return Json.a.toJson(orders);
     }
+
+
+    /**
+     *show the orders in arraylist order
+     * @return orders details in arraylist
+     */
     ArrayList<Order> ShowOrders() {
         return this.orders;
     }
