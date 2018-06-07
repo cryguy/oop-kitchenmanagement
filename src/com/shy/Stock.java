@@ -16,6 +16,7 @@ class Stock extends Ingredient {
         this.left = left;
         //this.ingredient = ingredient;
     }
+
     int getLeft() {
         return this.left;
     }
