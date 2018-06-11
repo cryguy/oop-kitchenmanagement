@@ -10,8 +10,12 @@ import java.util.*;
 class StockManagement {
     // StockManagement is an object that contains the array of Stocks
     ArrayList<Stock> stocks = new ArrayList<>();
-    private Map<String, Integer> daycounter = new HashMap<>();
-    private Map<String, ArrayList<Double>> stockuse = new HashMap<>();
+    private ArrayList<String> nameReferenceForDay = new ArrayList<>();
+    private ArrayList<Integer> dayCounter = new ArrayList<>();
+    //private Map<String, Integer> daycounter = new HashMap<>();
+    private ArrayList<String> stockReference = new ArrayList<>();
+    private ArrayList<ArrayList<Double>> stockUse = new ArrayList<>();
+    //private Map<String, ArrayList<Double>> stockuse = new HashMap<>();
     private static StockManagement instance = null;
 
     private StockManagement() {
@@ -83,45 +87,89 @@ class StockManagement {
     }
 
 
+    void putIfNotExistsIntoDay(String name){
+        boolean exists = false;
+        for (String aNameReferenceForDay : nameReferenceForDay) {
+            if (aNameReferenceForDay.equals(name)) {
+                exists = true;
+                break;
+            }
+        }
+        if (!exists) {
+            nameReferenceForDay.add(name);
+            dayCounter.add(0);
+        }
+    }
+    int getDayFromReference(String name)
+    {
+        int counter;
+        for (counter = 0 ; counter < nameReferenceForDay.size(); counter ++){
+            if (nameReferenceForDay.get(counter).equals(name))
+                break;
+        }
+        return dayCounter.get(counter);
+    }
+    private void incrementDay()
+    {
+        for (int i = 0; i < dayCounter.size(); i++){
+            dayCounter.set(i, dayCounter.get(i)+1);
+        }
+    }
+
     /**
      *
      */
     void endDay() {
-        for (Map.Entry<String, Integer> entry : daycounter.entrySet())
-            entry.setValue(entry.getValue() + 1);
-        for (Map.Entry<String, ArrayList<Double>> entry : stockuse.entrySet()) {
-            if (entry.getValue().size() > 2) {
-                double[] target = new double[entry.getValue().size()];
+
+        incrementDay();
+
+        for (int counter=0;counter < stockReference.size(); counter++)
+        {
+            if (stockUse.get(counter).size() > 2){
+                double[] target = new double[stockUse.get(counter).size()];
                 for (int i = 0; i < target.length; i++) {
-                    target[i] = entry.getValue().get(i); // to unBox Double to double...
+                    target[i] = stockUse.get(counter).get(i); // to unBox Double to double...
                 }
-                //System.out.println(entry.getKey() + " " + Arrays.toString(target));
-                //Prediction.getInstance().addData(entry.getKey(), target);
+                Prediction.getInstance().addData(stockReference.get(counter), target);
             }
         }
-        Prediction.getInstance().runPrediction();
+        //Prediction.getInstance().runPrediction();
         Prediction.getInstance().printPredictions();
 
     }
 
-
-    private void addToList(String name, double numtoadd) {
-        daycounter.put(name, daycounter.getOrDefault(name, 0));
-        if (!stockuse.containsKey(name)) {
-            ArrayList<Double> arraylist = new ArrayList<>();
-            arraylist.add(daycounter.get(name), numtoadd);
-            stockuse.put(name, arraylist);
-        } else {
-            ArrayList<Double> arraylist = stockuse.get(name);
-            if (daycounter.get(name) >= arraylist.size())
-                arraylist.add(daycounter.get(name), numtoadd);
-            arraylist.set(daycounter.get(name), arraylist.get(daycounter.get(name)) + numtoadd);
+    boolean stockInReference(String name){
+        for (String aStockReference : stockReference) {
+            if (aStockReference.equals(name))
+                return true;
         }
+        return false;
     }
 
-    void printPairsDebug() {
-        for (Map.Entry<String, ArrayList<Double>> entry : stockuse.entrySet()) {
-            System.out.println(entry.getKey() + " : " + Arrays.toString(entry.getValue().toArray()));
+    ArrayList<Double> getArrayFromName (String name){
+        int counter;
+        for (counter = 0 ; counter < stockReference.size(); counter ++){
+            if (stockReference.get(counter).equals(name))
+                break;
+        }
+        return stockUse.get(counter);
+    }
+
+    void putInReference(String name, ArrayList<Double> stockused) {
+      stockReference.add(name);
+      stockUse.add(stockused);
+    }
+    private void addToList(String name, double numtoadd) {
+        putIfNotExistsIntoDay(name);
+        if (!stockInReference(name)) {
+            ArrayList<Double> arraylist = new ArrayList<>();
+            arraylist.add(getDayFromReference(name), numtoadd);
+            putInReference(name, arraylist);
+        } else {
+            ArrayList<Double> arraylist = getArrayFromName(name);
+            if (getDayFromReference(name) >= arraylist.size())
+                arraylist.add(getDayFromReference(name), numtoadd);
+            arraylist.set(getDayFromReference(name), arraylist.get(getDayFromReference(name)) + numtoadd);
         }
     }
 

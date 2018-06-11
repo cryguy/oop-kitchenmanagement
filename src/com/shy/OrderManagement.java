@@ -92,7 +92,7 @@ class OrderManagement {
      */
 
     Order GetOrder(int i) {
-        for (int x = 0; x <= this.orders.size(); x++) {
+        for (int x = 0; x < this.orders.size(); x++) {
             if (this.orders.get(x).getName() == i) {
                 return this.orders.get(x);
             }

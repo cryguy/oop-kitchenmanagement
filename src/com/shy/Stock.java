@@ -25,14 +25,11 @@ class Stock extends Ingredient { // Stock is the child class of ingredient
         //this.ingredient = ingredient;
     }
 
-<<<<<<< HEAD
-=======
 
     /**
      *get left of stock
      * @return left
      */
->>>>>>> 904dbeec737e90171c7f4f594933577e207c7f22
     int getLeft() {
         return this.left;
     }   // Through this method to get left value

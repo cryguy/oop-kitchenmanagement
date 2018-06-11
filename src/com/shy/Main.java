@@ -7,6 +7,5 @@ public class Main {
         Json.fromString(json).restoreAll();
         Menu menu = new Menu();
         menu.mainMenu();
-        StockManagement.getInstance().printPairsDebug();
     }
 }

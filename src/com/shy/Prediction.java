@@ -6,6 +6,7 @@ import com.github.signaflo.timeseries.forecast.Forecast;
 import com.github.signaflo.timeseries.model.arima.Arima;
 import com.github.signaflo.timeseries.model.arima.ArimaOrder;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,8 +19,12 @@ class Prediction {
     // TODO: 20/May/2018 Maybe add function to see if forecasted result is accurate and print accuracy %
 
     private final ArimaOrder modelOrder = ArimaOrder.order(0, 1, 1, 0, 1, 1);
-    private Map<String, TimeSeries> TimeSeriesMap = new HashMap<>();
-    private Map<String, Forecast> forecastMap = new HashMap<>();
+    private ArrayList<String> TimeSeriesArrayName = new ArrayList<>();
+    private ArrayList<TimeSeries> TimeSeries = new ArrayList<>();
+    //private Map<String, TimeSeries> TimeSeriesMap = new HashMap<>();
+    private ArrayList<String> forecastArrayName = new ArrayList<>();
+    private ArrayList<Forecast> forecast = new ArrayList<>();
+    //private Map<String, Forecast> forecastMap = new HashMap<>();
 
     private static Prediction instance = null;
 
@@ -38,20 +43,25 @@ class Prediction {
     }
 
     void addData(String name, double[] data) {
-        TimeSeriesMap.put(name, Ts.newWeeklySeries(data));
+        TimeSeriesArrayName.add(name);
+        TimeSeries.add(Ts.newWeeklySeries(data));
     }
 
-    // call resetData in the Inventory loop
     void resetData() {
-        TimeSeriesMap.clear();
+        TimeSeriesArrayName.clear();
+        TimeSeries.clear();
     }
 
 
     void runPrediction() {
-        forecastMap.clear(); // clear existing data
-        for (Map.Entry<String, TimeSeries> entry : TimeSeriesMap.entrySet()) {
-            forecastMap.put(entry.getKey(), Arima.model(entry.getValue(), modelOrder, TimePeriod.halfMonth()).forecast(1));
+        forecastArrayName.clear();
+        forecast.clear(); // clear existing data
+        for (int counter=0;counter < TimeSeriesArrayName.size(); counter++)
+        {
+            forecastArrayName.add(TimeSeriesArrayName.get(counter));
+            forecast.add(Arima.model(TimeSeries.get(counter), modelOrder, TimePeriod.halfMonth()).forecast(1));
         }
+        resetData();
     }
 
 
@@ -63,24 +73,40 @@ class Prediction {
         runPrediction();
         System.out.println("---------- Prediction ----------");
         System.out.println("Name       Prediction LOW-UP-MID");
-        for (Map.Entry<String, Forecast> entry : forecastMap.entrySet()) {
-            System.out.printf("%-11s", entry.getKey());
+        for (int counter=0;counter < forecastArrayName.size(); counter++)
+        {
+            System.out.printf("%-11s", forecastArrayName.get(counter));
             System.out.printf("%10.0f  %2.0f %2.0f  %2.0f\n",
-                    entry.getValue().pointEstimates().at(0),
-                    entry.getValue().lowerPredictionInterval().at(0),
-                    entry.getValue().upperPredictionInterval().at(0),
-                    entry.getValue().pointEstimates().at(0));
+                    forecast.get(counter).pointEstimates().at(0),
+                    forecast.get(counter).lowerPredictionInterval().at(0),
+                    forecast.get(counter).upperPredictionInterval().at(0),
+                    forecast.get(counter).pointEstimates().at(0));
         }
     }
 
-
+    boolean forecastContainsName (String name){
+        for (String forecastName : forecastArrayName) {
+            if (forecastName.equals(name))
+                return true;
+        }
+        return false;
+    }
+    Forecast getForecast(String name){
+        int counter;
+        for (counter=0;counter < forecastArrayName.size(); counter++)
+        {
+            if (forecastArrayName.get(counter).equals(name))
+                break;
+        }
+        return forecast.get(counter);
+    }
     int[] getPrediction(String name) {
         int[] a = new int[3];
-        if (forecastMap.containsKey(name)) // check if it exists in the map, if not we will crash
+        if (forecastContainsName(name)) // check if it exists in the map, if not we will crash
         {
-            a[0] = (int) forecastMap.get(name).pointEstimates().at(0);
-            a[1] = (int) forecastMap.get(name).lowerPredictionInterval().at(0);
-            a[2] = (int) forecastMap.get(name).upperPredictionInterval().at(0);
+            a[0] = (int) getForecast(name).pointEstimates().at(0);
+            a[1] = (int) getForecast(name).lowerPredictionInterval().at(0);
+            a[2] = (int) getForecast(name).upperPredictionInterval().at(0);
         }
         return a;
     }

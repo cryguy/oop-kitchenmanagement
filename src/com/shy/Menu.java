@@ -61,17 +61,14 @@ class Menu {
                     inventory();
                     break;
                 case 5:
-                    //StockManagement.getInstance().printPairsDebug();
                     StockManagement.getInstance().endDay();
                     break;
                 case 0:
-
                     Json.prettyPrint();
                     Json.printString();
                     return;
                 default:
                     System.out.print("not found\n");
-                    //dead
                     break;
             }
         }
@@ -100,7 +97,7 @@ class Menu {
 
 
             /**
-             *show the orderr and confirm for the order if the selection from user is not equal to 0
+             *show the order and confirm for the order if the selection from user is not equal to 0
              */
             System.out.println("0 : Show Ordered & Confirm Order");
             selection = mmo.nextInt();
@@ -114,54 +111,10 @@ class Menu {
                 System.out.println("Error Please Select Again.");
             } else if (selection != 0) System.out.println("Error");
 
-            //   System.out.println(order.showOrder());
             ProductManagement.getInstance().updateAvailable();
         } while (selection != 0);
-        //StockManagement.getInstance().PrintStocks();
-
+        System.out.println(order.showOrder());
     }
-
-    // this would be the order menu
-   /* private void orderMenu() {
-        ProductManagement.getInstance().updateAvailable();
-        clear();
-        //StockManagement.getInstance().PrintStocks();
-        int selection;
-        Order order = OrderManagement.getInstance().NewOrder();
-        do {
-            if (ProductManagement.getInstance().availableProducts().isEmpty() && order.GetOrderProduct().size() == 0) {
-                System.out.println("ERROR - ALL PRODUCTS OUT OF STOCK!");
-                return;
-            } else if (ProductManagement.getInstance().availableProducts().isEmpty() && order.GetOrderProduct().size() != 0)
-                break;
-
-            int x = 0;
-            for (Product i : ProductManagement.getInstance().availableProducts()) {
-                System.out.println(++x + ": " + i.getName());
-            }
-
-            System.out.println("0 : Show Ordered & Confirm Order");
-            selection = mmo.nextInt();
-            if (selection != 0 && selection >= 1 && (selection - 1) <= ProductManagement.getInstance().availableProducts().size() - 1) {
-                try {
-                    order.AddProduct(ProductManagement.getInstance().availableProducts().get(selection - 1).clone()); // WELL, FIXED IT, Apparently only the Pointer/Reference to object is added
-                } catch (CloneNotSupportedException e) {
-                    e.printStackTrace();
-                }
-            } else if (selection != 0 && ((selection - 1) >= (ProductManagement.getInstance().availableProducts().size() - 1) || selection - 1 < 0)) {
-                System.out.println("Error Please Select Again.");
-            } else if (selection != 0) System.out.println("Error");
-
-            //   System.out.println(order.showOrder());
-            ProductManagement.getInstance().updateAvailable();
-        } while (selection != 0);
-
-        Cashier a = new Cashier();
-        a.showOrder(order);
-        //StockManagement.getInstance().PrintStocks();
-
-    }
-    */
 
 
     /**
@@ -211,6 +164,7 @@ class Menu {
                     System.out.println("---- Stock List ----");
                     System.out.println("Num  Name       Left");
                     StockManagement.getInstance().PrintStocks();
+                    System.out.println("0. Exit/Done");
                     // here exit whille loop
 
 
@@ -262,13 +216,13 @@ class Menu {
 
         int orderSelect;
         do {
-            System.out.println("----------  Order List ---------");
+            System.out.println("----------  Product in Order ---------");
             System.out.println("Name        Quantity       Price");
-            OrderManagement.getInstance().ShowOrders();
+            System.out.println(i.showOrder());
             System.out.println("0 Done editing");
             orderSelect = getInput("Enter index Order : ", new input.IntegerInputGrabber());
             if (orderSelect != 0 && orderSelect >= 1 && (orderSelect - 1) <= i.GetOrderProduct().size() - 1) {
-                int quantity = getInput("Enter index Order : ", new input.IntegerInputGrabber());
+                int quantity = getInput("Enter Quantity : ", new input.IntegerInputGrabber());
                 i.GetOrderProduct().get(orderSelect - 1).setQuantity(quantity);
             } else {
                 System.out.println("Invalid code entered. Try again");
@@ -305,10 +259,8 @@ class Menu {
                  */
                 case 2:
                     Cashier.showOrders();
-                    OrderManagement.getInstance().ShowOrders();
-                    System.out.println("Enter index");
                     int index = getInput("Enter index Order : ", new input.IntegerInputGrabber());
-                    orderEdit(OrderManagement.getInstance().GetOrder(index - 1));
+                    orderEdit(OrderManagement.getInstance().ShowOrders().get(index-1));
                     break;
 
 
@@ -316,15 +268,12 @@ class Menu {
                  *It is for the remove order and prompt user to enter which index want to remove
                  */
                 case 3:
-                    OrderManagement.getInstance().ShowOrders();
-                    System.out.println("Enter index");
+                    Cashier.showOrders();
                     int delete = getInput("Enter index Order : ", new input.IntegerInputGrabber());
-                    OrderManagement.getInstance().DeleteOrder(OrderManagement.getInstance().GetOrder(delete - 1));
+                    OrderManagement.getInstance().DeleteOrder(OrderManagement.getInstance().ShowOrders().get(delete-1));
                     break;
                 case 0:
                     return;
-
-
             }
         }
     }
@@ -417,7 +366,7 @@ class Menu {
     }
 
 
-    private <T> T getInput(String prompt, input.InputGrabber<T> grabber) {
+    public static <T> T getInput(String prompt, input.InputGrabber<T> grabber) {
         System.out.print(prompt);
         do {
             if (grabber.hasNextInput(mmo)) {
