@@ -13,7 +13,7 @@ class Cashier {
      */
     static void payForOrder(Order i){
         showOrder(i);
-        double paid = Menu.getInput("Enter Money Paid", new input.DoubleInputGrabber());
+        double paid = Menu.getInput("Enter Money Paid - ", new input.DoubleInputGrabber());
         System.out.println("Change is : RM" + (paid-getPrice(i)));
         cash += getPrice(i);
         OrderManagement.getInstance().DeleteOrder(i);

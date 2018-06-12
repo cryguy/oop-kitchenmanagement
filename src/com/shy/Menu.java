@@ -224,7 +224,7 @@ class Menu {
     private void orderManage() {
         int menu;
         while (true) {
-            System.out.println("Order Management\n\n 1. Print Order\n 2. Edit Order\n 3. Remove Order\n 0. Exit\n\nChoose your option: ");
+            System.out.println("Order Management\n\n 1. Print Order\n 2. Edit Order\n 3. Remove Order\n 4. Pay For Order\n 0. Exit\n\nChoose your option: ");
             menu = input.nextInt();
             input.nextLine();
             switch (menu) {
