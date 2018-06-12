@@ -10,6 +10,7 @@ class OrderManagement {
     /**
      * singleton of ordermanagement to make sure it will only has one access at the same time
      */
+
     private static OrderManagement instance = null;
     /**
      * array list or ordermanagement
@@ -94,9 +95,9 @@ class OrderManagement {
      */
 
     Order GetOrder(int i) {
-        for (int x = 0; x < this.orders.size(); x++) {
-            if (this.orders.get(x).getName() == i) {
-                return this.orders.get(x);
+        for (Order order : this.orders) {
+            if (order.getName() == i) {
+                return order;
             }
         }
         return NewOrder(); // wont ever happen but who knows...
