@@ -5,34 +5,26 @@ import com.github.signaflo.timeseries.Ts;
 import com.github.signaflo.timeseries.forecast.Forecast;
 import com.github.signaflo.timeseries.model.arima.Arima;
 import com.github.signaflo.timeseries.model.arima.ArimaOrder;
-
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+
 
 class Prediction {
 
 
-    /**
-     * declare variable of prediction
-     */
-    // TODO: 20/May/2018 Maybe add function to see if forecasted result is accurate and print accuracy %
-
     private final ArimaOrder modelOrder = ArimaOrder.order(0, 1, 1, 0, 1, 1);
     private ArrayList<String> TimeSeriesArrayName = new ArrayList<>();
     private ArrayList<TimeSeries> TimeSeries = new ArrayList<>();
-    //private Map<String, TimeSeries> TimeSeriesMap = new HashMap<>();
     private ArrayList<String> forecastArrayName = new ArrayList<>();
     private ArrayList<Forecast> forecast = new ArrayList<>();
-    //private Map<String, Forecast> forecastMap = new HashMap<>();
 
     private static Prediction instance = null;
 
     private Prediction() {
     }
-
     /**
-     *Prevents us from making more than 1 instance and causing problems
+     * make sure it will have only one can access to Prediction at the same time
+     * and check the instance is it null, if it is, it will create a new Prediction object
+     * @return object of Prediction
      */
 
     synchronized static Prediction getInstance() {
@@ -42,20 +34,30 @@ class Prediction {
         return instance;
     }
 
+    /**
+     * Add data to timeseries array
+     * @param name name of data
+     * @param data the actual data to do calculations on
+     */
     void addData(String name, double[] data) {
         TimeSeriesArrayName.add(name);
         TimeSeries.add(Ts.newWeeklySeries(data));
     }
 
-    void resetData() {
+    /**
+     * reset data of timeseries in order to not interfere with existing data
+     */
+    private void resetData() {
         TimeSeriesArrayName.clear();
         TimeSeries.clear();
     }
 
-
-    void runPrediction() {
+    /**
+     * run the prediction
+     */
+    private void runPrediction() {
         forecastArrayName.clear();
-        forecast.clear(); // clear existing data
+        forecast.clear();
         for (int counter=0;counter < TimeSeriesArrayName.size(); counter++)
         {
             forecastArrayName.add(TimeSeriesArrayName.get(counter));
@@ -68,7 +70,6 @@ class Prediction {
     /**
      *print out the prediction of the ingredient that need to prepare
      */
-    // TODO: 20/May/2018 Change the way its printed to accomodate multiple days of prediction
     void printPredictions() {
         runPrediction();
         System.out.println("---------- Prediction ----------");
@@ -84,14 +85,25 @@ class Prediction {
         }
     }
 
-    boolean forecastContainsName (String name){
+    /**
+     * Check if the array contains the name
+     * @param name name to check
+     * @return true if it exists
+     */
+    private boolean forecastContainsName (String name){
         for (String forecastName : forecastArrayName) {
             if (forecastName.equals(name))
                 return true;
         }
         return false;
     }
-    Forecast getForecast(String name){
+
+    /**
+     * get forecast of stock
+     * @param name name of stock
+     * @return forecast object
+     */
+    private Forecast getForecast(String name){
         int counter;
         for (counter=0;counter < forecastArrayName.size(); counter++)
         {
@@ -100,6 +112,12 @@ class Prediction {
         }
         return forecast.get(counter);
     }
+
+    /**
+     * get the value Predicted
+     * @param name name of stock to get prediction of
+     * @return an array of integer
+     */
     int[] getPrediction(String name) {
         int[] a = new int[3];
         if (forecastContainsName(name)) // check if it exists in the map, if not we will crash
@@ -110,21 +128,4 @@ class Prediction {
         }
         return a;
     }
-
-/*
-    static void test(){
-        TimeSeries series = Ts.newWeeklySeries(18.0,12.0,15.0,5); // input data here
-        ArimaOrder modelOrder = ArimaOrder.order(0, 1, 1, 0, 1, 1);
-        Arima model = Arima.model(series, modelOrder,TimePeriod.halfMonth()); // half month is juz to allow lower input
-        Forecast forecast = model.forecast(1); // days to look ahead
-        System.out.println(forecast.pointEstimates().at(0)); // prints out forecast
-        System.out.println(forecast.lowerPredictionInterval().at(0));
-        System.out.println(forecast.upperPredictionInterval().at(0));
-        /*
-            | Date              | Forecast     | Lower 95.0%  | Upper 95.0% |
-             --------------------------------------------------------------
-            | 0001-01-29T00:00  | 7.999710941  | 0.159855042  | 15.83956684 |
-         */
-    //}
-
 }

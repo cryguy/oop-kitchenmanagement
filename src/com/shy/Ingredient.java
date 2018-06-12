@@ -14,6 +14,8 @@ class Ingredient {
 
     /**
      * Overloaded constructor of Ingredient to store new name and new price of new object
+     * @param name name of ingredient
+     * @param price price of ingredient
      */
 
     Ingredient(String name, double price) {
@@ -25,6 +27,9 @@ class Ingredient {
 
     /**
      *Overloaded constructor of Ingredient to store new name and new price and new needed of new object
+     * @param name name of ingredient
+     * @param price price of ingredient
+     * @param needed number needed for product
      */
 
     Ingredient(String name, double price, int needed) {
@@ -32,17 +37,6 @@ class Ingredient {
         this.price = price;
         this.needed = needed;
     }
-// --Commented out by Inspection START (11/5/2018 8:33 AM):
-//    Ingredient(String name, int needed){
-//        this.name = name;
-//        this.price = 0;
-//        this.needed = needed;
-//    }
-// --Commented out by Inspection STOP (11/5/2018 8:33 AM)
-
-    /**
-     * getting all the ingredient name, price, needed and return
-     */
 
     String GetName() {
         return this.name;
@@ -58,7 +52,7 @@ class Ingredient {
 
 
     /**
-     *Turn the value of ingredient into string and print out
+     *Turn the value of ingredient into string
      */
 
     @Override

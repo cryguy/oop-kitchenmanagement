@@ -10,14 +10,14 @@ class Stock extends Ingredient { // Stock is the child class of ingredient
 
     */
 
-    /**
-     * declare variable left
-     */
     private int left;
 
 
     /**
-     *create a overloaded constructor to change the value in field name for store
+     * create a overloaded constructor to change the value in field name for store
+     * @param name name of stock to add
+     * @param price price of stock
+     * @param left number that is in stock
      */
     Stock(String name, double price, int left) {
         super(name, price);
@@ -55,8 +55,8 @@ class Stock extends Ingredient { // Stock is the child class of ingredient
 
 
     /**
-     *get the reduceleft of stock
-     * @return to left= left - reduce
+     * reduce stock
+     * @param reduce number to reduce by
      */
     void reduceLeft(int reduce) {
         this.left -= reduce;
@@ -64,19 +64,10 @@ class Stock extends Ingredient { // Stock is the child class of ingredient
 
 
     /**
-     * get the addleft of stock
-     *
-     * @return to left = left + add
+     * add number of stock left
+     * @param add number to add
      */
     void addLeft(int add) {
         this.left += add;
-    }
-
-    /**
-     *calling the default constructor of ingredient
-     */
-
-    Ingredient ingredient() {
-        return this;
     }
 }

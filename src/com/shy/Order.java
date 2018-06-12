@@ -15,6 +15,7 @@ class Order {
 
     /**
      * Creates a new order with the given identifier
+     * @param i identifier to give the order
      */
     Order(int i) {this.identifier=i;}
 
@@ -73,8 +74,6 @@ class Order {
 
     /**
      * remove the order list if not found any product inside
-     *
-     * @return ret
      */
 
     private void RemoveEmptyProduct() {
@@ -93,7 +92,7 @@ class Order {
      * @return String containing all order and price of product
      */
     // TODO : Might want to change String to Array? Not sure bout this, maybe void and then just Println all the orders
-    String showOrder() {
+    public String toString() {
         RemoveEmptyProduct();
         StringBuilder sb = new StringBuilder();
         int counter = 0;
@@ -104,7 +103,6 @@ class Order {
         }
         return sb.toString();
     }
-
 
     /**
      * Gets ArrayList of Product in order.

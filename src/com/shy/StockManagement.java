@@ -10,20 +10,20 @@ import java.util.*;
 class StockManagement {
     // StockManagement is an object that contains the array of Stocks
     ArrayList<Stock> stocks = new ArrayList<>();
-    private ArrayList<String> nameReferenceForDay = new ArrayList<>();
+    private ArrayList<String> stockNameForDayCounter = new ArrayList<>();
     private ArrayList<Integer> dayCounter = new ArrayList<>();
-    //private Map<String, Integer> daycounter = new HashMap<>();
-    private ArrayList<String> stockReference = new ArrayList<>();
-    private ArrayList<ArrayList<Double>> stockUse = new ArrayList<>();
-    //private Map<String, ArrayList<Double>> stockuse = new HashMap<>();
+    private ArrayList<String> stockNameForUsageCount = new ArrayList<>();
+    private ArrayList<ArrayList<Double>> usageCount = new ArrayList<>();
     private static StockManagement instance = null;
 
     private StockManagement() {
     }
-
     /**
-     *make sure that will only one person can be access into the stock management at the same time
+     * make sure it will have only one can access to StockManagement at the same time
+     * and check the instance is it null, if it is, it will create a new StockManagement object
+     * @return object of StockManagement
      */
+
 
     synchronized static StockManagement getInstance() {
         if(instance == null) {
@@ -44,7 +44,10 @@ class StockManagement {
 
 
     /**
-     *for adding new stock and store them into the stocks with details
+     * for adding new stock and store them into the stocks with details
+     * @param name name of the stock
+     * @param price price of stock
+     * @param left number in stock
      */
 
     void AddStock(String name, double price, int left) {
@@ -59,7 +62,7 @@ class StockManagement {
     void PrintStocks(){
         int x = 0;
         for (Stock i : stocks) {
-            System.out.printf("%d\t %s\t\t%d%n", ++x, i.getName(), i.getLeft());
+            System.out.printf("%d     %20s %3d%n", ++x, i.getName(), i.getLeft());
             //System.out.println(++x + ". " + i.GetName() + " " + i.getLeft());
         }
     }
@@ -67,12 +70,13 @@ class StockManagement {
 
     /**
      *check if the ingredient used have stock and reduce the ingredient in stock
+     * @param product ingredient to reduce from
      */
     void ReduceQuantity(Product product) {
         for (Ingredient i : product.getIngredients())
             for (Stock j : stocks)
                 if (j.GetName().equals(i.GetName())) {
-                    addToList(i.GetName(), i.GetNeeded() * product.getQuantity());
+                    addToUsageArray(i.GetName(), i.GetNeeded() * product.getQuantity());
                     j.reduceLeft(i.GetNeeded() * product.getQuantity());
                     break;
                 }
@@ -80,6 +84,8 @@ class StockManagement {
 
     /**
      *add the stock for ingredient quantity
+     * @param index index of stock to add
+     * @param numbertoadd number of stock to add
      */
 
     void addStockQuantity(int index, int numbertoadd) {
@@ -87,24 +93,25 @@ class StockManagement {
     }
 
 
-    void putIfNotExistsIntoDay(String name){
+    private void putIfNotExistsIntoDay(String name){
         boolean exists = false;
-        for (String aNameReferenceForDay : nameReferenceForDay) {
+        for (String aNameReferenceForDay : stockNameForDayCounter) {
             if (aNameReferenceForDay.equals(name)) {
                 exists = true;
                 break;
             }
         }
         if (!exists) {
-            nameReferenceForDay.add(name);
+            stockNameForDayCounter.add(name);
             dayCounter.add(0);
         }
     }
-    int getDayFromReference(String name)
+
+    private int getDayFromReference(String name)
     {
         int counter;
-        for (counter = 0 ; counter < nameReferenceForDay.size(); counter ++){
-            if (nameReferenceForDay.get(counter).equals(name))
+        for (counter = 0 ; counter < stockNameForDayCounter.size(); counter ++){
+            if (stockNameForDayCounter.get(counter).equals(name))
                 break;
         }
         return dayCounter.get(counter);
@@ -117,56 +124,62 @@ class StockManagement {
     }
 
     /**
-     *
+     * Ends the "day" by incrementing the daycounter so we know to keep the stock used in a separate "value"
+     * and prints the prediction for tomorrows stock usage
      */
     void endDay() {
 
         incrementDay();
-
-        for (int counter=0;counter < stockReference.size(); counter++)
+        for (int counter = 0; counter < stockNameForUsageCount.size(); counter++)
         {
-            if (stockUse.get(counter).size() > 2){
-                double[] target = new double[stockUse.get(counter).size()];
+            if (usageCount.get(counter).size() > 2){
+                double[] target = new double[usageCount.get(counter).size()];
                 for (int i = 0; i < target.length; i++) {
-                    target[i] = stockUse.get(counter).get(i); // to unBox Double to double...
+                    target[i] = usageCount.get(counter).get(i); // to unBox Double to double...
                 }
-                Prediction.getInstance().addData(stockReference.get(counter), target);
+                Prediction.getInstance().addData(stockNameForUsageCount.get(counter), target);
             }
         }
-        //Prediction.getInstance().runPrediction();
         Prediction.getInstance().printPredictions();
 
     }
 
-    boolean stockInReference(String name){
-        for (String aStockReference : stockReference) {
+
+    /**
+     * Check if stock is already in the usage Array
+     * @param name name of the stock to check if its in array for forecast
+     * @return true or false depending if the item exists in the array
+     */
+    private boolean stockInUsageArray(String name){
+        for (String aStockReference : stockNameForUsageCount) {
             if (aStockReference.equals(name))
                 return true;
         }
         return false;
     }
 
-    ArrayList<Double> getArrayFromName (String name){
+
+    private ArrayList<Double> getUsageFromStockName(String name){
         int counter;
-        for (counter = 0 ; counter < stockReference.size(); counter ++){
-            if (stockReference.get(counter).equals(name))
+        for (counter = 0 ; counter < stockNameForUsageCount.size(); counter ++){
+            if (stockNameForUsageCount.get(counter).equals(name))
                 break;
         }
-        return stockUse.get(counter);
+        return usageCount.get(counter);
     }
 
-    void putInReference(String name, ArrayList<Double> stockused) {
-      stockReference.add(name);
-      stockUse.add(stockused);
+    private void putInUsageArray(String name, ArrayList<Double> stockused) {
+      stockNameForUsageCount.add(name);
+      usageCount.add(stockused);
     }
-    private void addToList(String name, double numtoadd) {
+    private void addToUsageArray(String name, double numtoadd) {
         putIfNotExistsIntoDay(name);
-        if (!stockInReference(name)) {
+        if (!stockInUsageArray(name)) {
             ArrayList<Double> arraylist = new ArrayList<>();
             arraylist.add(getDayFromReference(name), numtoadd);
-            putInReference(name, arraylist);
+            putInUsageArray(name, arraylist);
         } else {
-            ArrayList<Double> arraylist = getArrayFromName(name);
+            ArrayList<Double> arraylist = getUsageFromStockName(name);
             if (getDayFromReference(name) >= arraylist.size())
                 arraylist.add(getDayFromReference(name), numtoadd);
             arraylist.set(getDayFromReference(name), arraylist.get(getDayFromReference(name)) + numtoadd);
@@ -186,7 +199,7 @@ class StockManagement {
         stocks.remove(i);
     }
 
-    ArrayList<Stock> getStock() {
+    private ArrayList<Stock> getStock() {
         return stocks;
     }
 

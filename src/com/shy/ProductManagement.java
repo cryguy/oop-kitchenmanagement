@@ -19,6 +19,7 @@ class ProductManagement {
 
     /**
      * Prevents us from making more than 1 instance and causing problems
+     * @return the object of productManagement
      */
 
     synchronized static ProductManagement getInstance() {
@@ -42,7 +43,10 @@ class ProductManagement {
 
 
     /**
-     *to check the product that is available now
+     * to check the product that is available now
+     * @param stocks stock list to check
+     * @param product product to check
+     * @return true or false depending on the availability of product
      */
     private boolean productAvailable(ArrayList<Stock> stocks, Product product) {
         //boolean[] t = new boolean[product.getIngredients().size()];
@@ -73,6 +77,9 @@ class ProductManagement {
 
     /**
      *show the product that have ingredient in stock to make
+     * @return return product that is available
+     * @param products product list to check
+     * @param stocks stock list to check from
      */
     private ArrayList<Product> showAllowedProduct(ArrayList<Stock> stocks, ArrayList<Product> products) {
         ArrayList<Product> returnproduct = new ArrayList<>();
@@ -83,28 +90,39 @@ class ProductManagement {
         return returnproduct;
     }
 
-
+    /**
+     * serialize the current object into json
+     * @return String of json
+     */
     String toJson() {
         return Json.a.toJson(products);
     }
 
-
+    /**
+     * Updates the current available products
+     */
     void updateAvailable() {
         for (Product i : availableProducts)
             i.setQuantity(1);
         availableProducts = showAllowedProduct(StockManagement.getInstance().stocks, products);
     }
 
-    ArrayList<Product> getProducts() {
-        return products;
-    }
-
+    /**
+     * restore the object using json data
+     * @param json the input of json string
+     */
     void setProducts(String json) {
         products = Json.a.fromJson(json, new TypeToken<ArrayList<Product>>() {
         }.getType());
     }
+
+    /**
+     * Delete Product from product list
+     * @param i product to delete
+     */
     void DeleteProduct(Product i) {
         products.remove(i);
+        updateAvailable();
     }
 
 }

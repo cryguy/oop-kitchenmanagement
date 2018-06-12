@@ -1,12 +1,11 @@
 package com.shy;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 
 class Menu {
-    final private static Scanner mmo = new Scanner(System.in);
 
+    final private static Scanner input = new Scanner(System.in);
 
     /**
      * Default constructor of menu
@@ -15,23 +14,6 @@ class Menu {
     }
 
     // clear console
-    private void clear() {
-        final String os = System.getProperty("os.name");
-
-        if (os.contains("Windows")) {
-            try {
-                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor(); // clear cmd by running cmd /c cls
-            } catch (InterruptedException | IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            try {
-                Runtime.getRuntime().exec("clear");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
     /**
      *Declare the datatype of main_menu_op and showing the option to let user choose
@@ -40,10 +22,9 @@ class Menu {
     void mainMenu() {
         int main_menu_op;
         while (true) {
-            clear();
             OrderManagement.getInstance().CheckEmptyOrderAndRemove();
-            System.out.print("Main Menu\n\n 1. Order\n 2. Order Management\n 3. Product Management\n 4. Inventory Management\n 5. End Day\n 0. Exit\n\nChoose your option: ");
-            main_menu_op = mmo.nextInt();
+            System.out.print("Main Menu\n\n 1. Order\n 2. Order Management\n 3. Product Management\n 4. Inventory Management\n 5. End Day\n 6. Show Current Cash in Cashier\n 0. Exit\n\nChoose your option: ");
+            main_menu_op = input.nextInt();
             switch (main_menu_op) {
                 case 1:
                     //once user choose this option the orderMenu() will come up
@@ -63,6 +44,12 @@ class Menu {
                 case 5:
                     StockManagement.getInstance().endDay();
                     break;
+                case 6:
+                    Cashier.getCash();
+                    input.nextLine();
+                    System.out.print("Press Enter to continue...");
+                    input.nextLine();
+                    break;
                 case 0:
                     Json.prettyPrint();
                     Json.printString();
@@ -77,10 +64,10 @@ class Menu {
 
     /**
      *Check whether the thing store inside the product management is it empty and show respond
+     * @param order Order to add to
      */
     private void orderMenu(Order order) {
         ProductManagement.getInstance().updateAvailable();
-        clear();
         //StockManagement.getInstance().PrintStocks();
         int selection;
         do {
@@ -96,11 +83,11 @@ class Menu {
             }
 
 
-            /**
+            /*
              *show the order and confirm for the order if the selection from user is not equal to 0
              */
             System.out.println("0 : Show Ordered & Confirm Order");
-            selection = mmo.nextInt();
+            selection = input.nextInt();
             if (selection != 0 && selection >= 1 && (selection - 1) <= ProductManagement.getInstance().availableProducts().size() - 1) {
                 try {
                     order.AddProduct(ProductManagement.getInstance().availableProducts().get(selection - 1).clone()); // WELL, FIXED IT, Apparently only the Pointer/Reference to object is added
@@ -113,24 +100,23 @@ class Menu {
 
             ProductManagement.getInstance().updateAvailable();
         } while (selection != 0);
-        System.out.println(order.showOrder());
+        System.out.println(order.toString());
     }
 
 
     /**
-     *if select inside product manage it will show you the ouptput like this
+     * Allows user to manage product, allows adding, removing and showing products
      */
     private void productManage() {
         int menu;
         while (true) {
-            clear();
             System.out.print("Product Management\n\n 1. Print Products\n 2. Add Product\n 3. Remove Product\n 0. Exit\n\nChoose your option: ");
-            menu = mmo.nextInt();
-            mmo.nextLine();
+            menu = input.nextInt();
+            input.nextLine();
             switch (menu) {
                 case 1:
 
-                    /**
+                    /*
                      *show all the product details that have store
                      */
                     System.out.println("---- Product List ----");
@@ -140,24 +126,23 @@ class Menu {
                     ProductManagement.getInstance().PrintProduct();
                     break;
                 case 2:
-                    /**
+                    /*
                      *If store is empty ask user need to store new in stock or not
                      */
-                    clear();
                     if (StockManagement.getInstance().IsEmpty()) {
                         System.err.println("Nothing is in stock !");
                         System.err.println("Have you inserted any Stock?");
                         System.err.println("Press Enter to Continue");
-                        mmo.nextLine();
+                        input.nextLine();
                         break;
                     }
 
 
-                    /**
-                     *if user enter and continue prompt user to enter product name and price
+                    /*
+                     * if user enter and continue prompt user to enter product name and price
                      */
                     System.out.print("Enter Name of Product : ");
-                    String name = mmo.nextLine();
+                    String name = input.nextLine();
                     double price = getInput("Enter Price of " + name + " : ", new input.DoubleInputGrabber());
                     int inventoryselect;
                     ArrayList<Ingredient> productIngredient = new ArrayList<>();
@@ -184,7 +169,6 @@ class Menu {
                     break;
                 case 3:
 
-
                     System.out.println("---- Product List ----");
 
                     if (ProductManagement.products.isEmpty()) {
@@ -210,7 +194,8 @@ class Menu {
 
 
     /**
-     *Take the order arraylist i for edit  and prompt user which index they wish to remove
+     * Edits order if need be
+     * @param i order to edit
      */
     private void orderEdit(Order i) {
 
@@ -218,7 +203,7 @@ class Menu {
         do {
             System.out.println("----------  Product in Order ---------");
             System.out.println("Name        Quantity       Price");
-            System.out.println(i.showOrder());
+            System.out.println(i.toString());
             System.out.println("0 Done editing");
             orderSelect = getInput("Enter index Order : ", new input.IntegerInputGrabber());
             if (orderSelect != 0 && orderSelect >= 1 && (orderSelect - 1) <= i.GetOrderProduct().size() - 1) {
@@ -234,43 +219,61 @@ class Menu {
 
 
     /**
-     *its a method to prompt users to choose the option if they choose ordermanagement in mainmenu
+     * its a method to prompt users to choose the option if they choose ordermanagement in mainmenu
      */
     private void orderManage() {
         int menu;
         while (true) {
-            clear();
             System.out.println("Order Management\n\n 1. Print Order\n 2. Edit Order\n 3. Remove Order\n 0. Exit\n\nChoose your option: ");
-            menu = mmo.nextInt();
-            mmo.nextLine();
+            menu = input.nextInt();
+            input.nextLine();
             switch (menu) {
 
-                /**
+                /*
                  *print all the order details come out
                  */
                 case 1:
+                    if (OrderManagement.getInstance().getOrderArray().isEmpty())
+                        System.out.println("Nothing is in here");
                     System.out.println("---- Order List ----");
                     System.out.println("Order   Quantity   Price");
-                    Cashier.showOrders();//OrderManagement.getInstance().ShowOrders();
+                    Cashier.showOrders();//OrderManagement.getInstance().getOrderArray();
                     break;
 
-                /**
+                /*
                  * it is for edit order and show which one index want to edit
                  */
                 case 2:
+                    if (OrderManagement.getInstance().getOrderArray().isEmpty()) {
+                        System.out.println("Nothing in order list");
+                        break;
+                    }
                     Cashier.showOrders();
                     int index = getInput("Enter index Order : ", new input.IntegerInputGrabber());
-                    orderEdit(OrderManagement.getInstance().ShowOrders().get(index-1));
+                    orderEdit(OrderManagement.getInstance().getOrderArray().get(index-1));
                     break;
 
 
-                /**
+                /*
                  *It is for the remove order and prompt user to enter which index want to remove
                  */
                 case 3:
+                    if (OrderManagement.getInstance().getOrderArray().isEmpty()) {
+                        System.out.println("Nothing is in here");
+                        break;
+                    }
                     Cashier.showOrders();
                     int delete = getInput("Enter index Order : ", new input.IntegerInputGrabber());
-                    OrderManagement.getInstance().DeleteOrder(OrderManagement.getInstance().ShowOrders().get(delete-1));
+                    OrderManagement.getInstance().DeleteOrder(OrderManagement.getInstance().getOrderArray().get(delete-1));
+                    break;
+                case 4:
+                    if (OrderManagement.getInstance().getOrderArray().isEmpty()) {
+                        System.out.println("Nothing is in here");
+                        break;
+                    }
+                    Cashier.showOrders();
+                    int pay = getInput("Enter index Order : ", new input.IntegerInputGrabber());
+                    Cashier.payForOrder(OrderManagement.getInstance().getOrderArray().get(pay-1));
                     break;
                 case 0:
                     return;
@@ -285,14 +288,13 @@ class Menu {
     private void inventory() {
         int menu;
         while (true) {
-            clear();
             System.out.print("Inventory Management\n\n 1. Print Stock\n 2. Add Stock\n 3. Remove Stock\n 0. Exit\n\nChoose your option: ");
-            menu = mmo.nextInt();
-            mmo.nextLine();
+            menu = input.nextInt();
+            input.nextLine();
             switch (menu) {
                 case 1:
 
-                    /**
+                    /*
                      *print out all the stock details
                      */
                     System.out.println("---- Stock List ----");
@@ -301,7 +303,7 @@ class Menu {
                     break;
                 case 2:
 
-                    /**
+                    /*
                      * add the stock into the index user want
                      */
                     // add stock here
@@ -309,9 +311,9 @@ class Menu {
                         addaStock();
                     else {
                         System.out.println("---- Stock List ----");
-                        System.out.println("Num  Name       Left");
+                        System.out.println("Num\tName\t\tLeft");
                         StockManagement.getInstance().PrintStocks();
-                        System.out.println("0    Add Stock");
+                        System.out.println("0\tAdd Stock");
                         int stockselect = getInput("Enter index Add : ", new input.IntegerInputGrabber());
 
                         if (stockselect >= 1 && (stockselect - 1) >= StockManagement.getInstance().stocks.size() - 1) {
@@ -322,14 +324,15 @@ class Menu {
                             }
                             int toadd = getInput("Enter number of \"" + StockManagement.getInstance().stocks.get(stockselect - 1).getName() + "\" to add - ", new input.IntegerInputGrabber());
                             StockManagement.getInstance().addStockQuantity(stockselect - 1, toadd);
-                        } else
-                            mmo.nextLine();
-                        addaStock();
+                        } else {
+                            input.nextLine();
+                            addaStock();
+                        }
                     }
                     break;
                 case 3:
 
-                    /**
+                    /*
                      *remove the stock
                      */
                     System.out.println("-- Stock List --");
@@ -357,25 +360,31 @@ class Menu {
     /**
      *add the stock by prompt user to enter the stock details
      */
-    void addaStock() {
+    private void addaStock() {
         System.out.print("Enter Name of Item : ");
-        String name = mmo.nextLine();
+        String name = input.nextLine();
         double price = getInput("Enter Price of " + name + " : ", new input.DoubleInputGrabber());
         int left = getInput("Enter Number of " + name + " in stock : ", new input.IntegerInputGrabber());
         StockManagement.getInstance().AddStock(name, price, left);
     }
 
-
-    public static <T> T getInput(String prompt, input.InputGrabber<T> grabber) {
+    /**
+     *
+     * @param prompt message to show user
+     * @param grabber input object
+     * @param <T> type of input needed
+     * @return input from user
+     */
+    static <T> T getInput(String prompt, input.InputGrabber<T> grabber) {
         System.out.print(prompt);
         do {
-            if (grabber.hasNextInput(mmo)) {
+            if (grabber.hasNextInput(input)) {
                 System.out.println(grabber.getExpectedInputFormat());
                 System.out.print(prompt);
-                mmo.nextLine();
+                input.nextLine();
             }
-        } while (grabber.hasNextInput(mmo));
-        return grabber.getNextInput(mmo);
+        } while (grabber.hasNextInput(input));
+        return grabber.getNextInput(input);
     }
 
 }

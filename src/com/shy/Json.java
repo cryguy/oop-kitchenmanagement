@@ -26,6 +26,8 @@ public class Json {
 
     /**
      *Store jsonString into Json and get the details from class Json
+     * @param jsonString string to load from
+     * @return Json object
      */
 
 
@@ -35,11 +37,11 @@ public class Json {
     }
 
 
-    public static void printString() {
+    static void printString() {
         System.out.println(new Gson().toJson(new Json()));
     }
 
-    public static void prettyPrint() {
+    static void prettyPrint() {
         System.out.println(new GsonBuilder().setPrettyPrinting().create().toJson(new Json()));
     }
 

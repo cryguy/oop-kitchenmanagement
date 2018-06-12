@@ -32,7 +32,7 @@ class OrderManagement {
     /**
      *make sure it will have only one can access to OrderManagement at the same time
      * and check the instance is it null, if it is, it will create a new ordermanagement object
-     * @return instance's value
+     * @return object of OrderManagement
      */
 
     synchronized static OrderManagement getInstance() {
@@ -75,6 +75,7 @@ class OrderManagement {
 
     /**
      *if meet new order counter will +1 and in arraylist of order will +1
+     * @return a Order object
      */
 
     Order NewOrder() {
@@ -88,6 +89,7 @@ class OrderManagement {
 
     /**
      *Get the details in order arraylist
+     * @param i index of order to get
      * @return to new order
      */
 
@@ -103,6 +105,7 @@ class OrderManagement {
 
     /**
      *method to save order and add the order in orders arraylist
+     * @param i order to save
      */
 
     void SaveOrder(Order i) {
@@ -112,6 +115,7 @@ class OrderManagement {
 
     /**
      *method to delete order and remove the order in orders arraylist
+     * @param i order to delete
      */
 
     void DeleteOrder(Order i) {
@@ -121,6 +125,7 @@ class OrderManagement {
 
     /**
      *set the orders arraylist from json
+     * @param json string to restore from
      */
 
     void setOrders(String json) {
@@ -142,7 +147,7 @@ class OrderManagement {
      *show the orders in arraylist order
      * @return orders details in arraylist
      */
-    ArrayList<Order> ShowOrders() {
+    ArrayList<Order> getOrderArray() {
         return this.orders;
     }
 }

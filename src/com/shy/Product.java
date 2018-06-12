@@ -3,22 +3,17 @@ import java.util.ArrayList;
 
 public class Product implements Cloneable {
 
-
-    /**
-     * declare the variable of product
-     */
-
     private String name;
     private double price;
     private int quantity;
 
     private ArrayList<Ingredient> ingredients;
-    // constructor with custom number of product
-    // constructor for default 1 product
-
 
     /**
-     *overload constructor to receive the value from user
+     * overload constructor to receive the value from user
+     * @param name name of product
+     * @param price price of product
+     * @param ingredients ingredients needed
      */
     Product(String name, double price, ArrayList<Ingredient> ingredients) {
         this.name = name;
@@ -56,8 +51,7 @@ public class Product implements Cloneable {
 
     /**
      * set the quantity of product
-     *
-     * @return quantity of product
+     * @param i number to set quantity to
      */
 
     void setQuantity(int i) {
@@ -75,6 +69,7 @@ public class Product implements Cloneable {
 
     /**
      *add the quantity of product
+     * @param add number to add
      */
     void addQuantity(int add) {
         this.quantity += add;
@@ -88,8 +83,12 @@ public class Product implements Cloneable {
     }
 
 
-
-
+    /**
+     * Clone the product for use, if we dont do this, the adding of product into
+     * order would be slower and would be using identifiers instead of directly using the object
+     * @return a new Product object
+     * @throws CloneNotSupportedException gives error if its not supported
+     */
     public Product clone() throws CloneNotSupportedException {
         Product cloneObj = (Product) super.clone();
         cloneObj.ingredients = this.ingredients;
