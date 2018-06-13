@@ -23,7 +23,7 @@ class Menu {
         int main_menu_op;
         while (true) {
             OrderManagement.getInstance().CheckEmptyOrderAndRemove();
-            System.out.print("Main Menu\n\n 1. Order\n 2. Order Management\n 3. Product Management\n 4. Inventory Management\n 5. End Day\n 6. Show Current Cash in Cashier\n 0. Exit\n\nChoose your option: ");
+            System.out.print("----------------------\n Restaurant Chill Lah\n----------------------\n\n 1. Order\n 2. Order Management\n 3. Product Management\n 4. Inventory Management\n 5. End Day\n 6. Show Current Cash in Cashier\n 0. Exit\n\nChoose your option: ");
             main_menu_op = input.nextInt();
             switch (main_menu_op) {
                 case 1:
